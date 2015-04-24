@@ -10,5 +10,6 @@ http://readwrite.com/2013/10/02/github-for-beginners-part-2
 2) 'git add <the new file>' to tell git to track the file
 3) 'git commit -m "a message about the commit"' to take a snapshot of the
     project
-4) 'git push' to upload the file to the project 
+4) 'git push' to upload the file to the project
+# 
 
