@@ -13,3 +13,8 @@ http://readwrite.com/2013/10/02/github-for-beginners-part-2
 4) 'git push' to upload the file to the project
 # 
 
+# M. Bomben
+# Tue May 19 12:28:35 CEST 2015
+# documenting the superimpose module 
+pyton module to create a class based on an XML schema file (xsd)
+http://pythonhosted.org/generateDS/
