@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plot 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="superimpose.xsd">
+<filename>/Users/bomben/work/RD50/GrazingMeasurement/MPI_VTT-NP2-20-E4/MPI_VTT-NP2-20-E4_Pennicard_EField</filename>
+  <title> n-on-p, $\Phi=6\times10^{15} n_{eq}/cm^{2}$, Pennicard model</title>
+  <axe>
+    <name>X</name>
+    <label>Buk depth [$\mu$m]</label>
+    <min>2</min>
+    <max>199</max>
+  </axe>
+  <axe>
+    <name>Y</name>
+    <label>Electric Field [V/cm]</label>
+    <min>0</min>
+    <max>6e4</max>
+  </axe>
+  <curve>
+    <data>/Users/bomben/work/RD50/GrazingMeasurement/MPI_VTT-NP2-20-E4/Pennicard_restart/EField-100V_pruned.dat</data>
+    <label>100 V</label>
+    <marker>o</marker>
+    <color>g</color>
+  </curve>
+  <curve>
+    <data>/Users/bomben/work/RD50/GrazingMeasurement/MPI_VTT-NP2-20-E4/Pennicard_restart/EField-300V_pruned.dat</data>
+    <label>300 V</label>
+    <marker>+</marker>
+    <color>r</color>
+  </curve>
+  <curve>
+    <data>/Users/bomben/work/RD50/GrazingMeasurement/MPI_VTT-NP2-20-E4/Pennicard_restart/EField-400V_pruned.dat</data>
+    <label>400 V</label>
+    <marker>v</marker>
+    <color>k</color>
+  </curve>
+  <curve>
+    <data>/Users/bomben/work/RD50/GrazingMeasurement/MPI_VTT-NP2-20-E4/Pennicard_restart/EField-500V_pruned.dat</data>
+    <label>500 V</label>
+    <marker>></marker>
+    <color>c</color>
+  </curve>
+</plot>
