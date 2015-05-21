@@ -19,6 +19,8 @@ y0max = 1/2*P-dY
 
 nsteps = int((y0max-y0min)/dY)+1
 #print "expected number of steps:",nsteps
+print "y0min = ",y0min
+print "y0max = ",y0max
 
 entry_point=[]
 exit_point=[]
@@ -27,7 +29,7 @@ y0=y0min
 while ( y0<y0max):
   entry_point = [y0,0]
   exit_point  = [3/2.*P,functions.inverse_func(3/2.*P,T,y0)]
-  print entry_point[0],entry_point[1],exit_point[0],exit_point[1]
+  #print entry_point[0],entry_point[1],exit_point[0],exit_point[1]
   y0+=dY
   index += 1
 #print "index = ",index,"\tnstes = ",nsteps
