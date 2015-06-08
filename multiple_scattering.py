@@ -25,7 +25,7 @@ print "L3=",L3,"cm"
 theta = thetaMS(p,w,X0Si)
 print "theta=",theta,"rad"     
 deltay_tele1=L2*tan(theta)+L3*tan(sqrt(2)*theta)
-print "deltay_tele1=",deltay_tele1*1e4,"um"
-deltay_dut0=L1/(L1+L2+L3)*deltay_tele1
+#print "deltay_tele1=",deltay_tele1*1e4,"um"
+deltay_dut0=L1/(L1+L2+L3)*deltay_tele1/((3.)**0.5)
 print "deltay_dut0=",deltay_dut0*1e4,"um"
 
