@@ -5,7 +5,7 @@ import pylab as plt
 
 import xml.etree.ElementTree as ET
 
-def etreeminiparser(filename): 
+def etreeminiparser(filename,show): 
   filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
@@ -92,10 +92,17 @@ def etreeminiparser(filename):
   save_pic = saveFile + '.pdf'
   print "Results will be saved in:\n\t",save_pic,
   plt.savefig(save_pic)
-  plt.show()
+  if ( show ):
+    plt.show()
 
 if (__name__ == "__main__"):
-  if (len(sys.argv) != 2 ):
-    print "Usage:",sys.argv[0],"<filename.xml>\n";
+  show = False
+  if (len(sys.argv) < 2 or len(sys.argv) > 3 ):
+    print "Usage:",sys.argv[0],"<filename.xml> [show: 1 or 0]\n";
     exit(2)
-  etreeminiparser(sys.argv[1:])
+  if (len(sys.argv) == 3 ):
+    show = sys.argv[2]
+    if ( show != 1 or show != 0 ):
+      print "Error -> show has to be 1 or 0]\n",show," is not an acceptable value\n";
+      exit(3)
+  etreeminiparser(sys.argv[1:],show)
