@@ -16,7 +16,7 @@ dY = args.deltay[0]
 y0min = 0
 y0max = W
 
-nsteps = int((y0max-y0min)/dY)+1
+nsteps = int((y0max-y0min)/dY)
 print "expected number of steps:",nsteps
 
 entry_point=[]
