@@ -98,11 +98,8 @@ def etreeminiparser(filename,show):
 if (__name__ == "__main__"):
   show = False
   if (len(sys.argv) < 2 or len(sys.argv) > 3 ):
-    print "Usage:",sys.argv[0],"<filename.xml> [show: 1 or 0]\n";
+    print "Usage:",sys.argv[0],"<filename.xml> [show]\n";
     exit(2)
   if (len(sys.argv) == 3 ):
-    show = sys.argv[2]
-    if ( show != 1 or show != 0 ):
-      print "Error -> show has to be 1 or 0]\n",show," is not an acceptable value\n";
-      exit(3)
+    show = True
   etreeminiparser(sys.argv[1:],show)
