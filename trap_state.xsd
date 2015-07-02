@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- definition of simple elements -->
+<xs:element name="type"/>
+<xs:simpleType name="type">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="A"/>
+    <xs:enumeration value="D"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:element name="eta" type="xs:double"/>
+<xs:element name="sigmae" type="xs:double"/>
+<xs:element name="sigmah" type="xs:double"/>
+<xs:element name="energy" type="xs:double"/>
+<xs:element name="deg" type="xs:double"/>
+<xs:element name="name" type="xs:string"/>
+
+
+<!-- definition of complex elements -->
+
+<xs:element name="trap">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="name"/>
+      <xs:element ref="type"/>
+      <xs:element ref="energy"/>
+      <xs:element ref="deg"/>
+      <xs:element ref="sigmae"/>
+      <xs:element ref="sigmah"/>
+      <xs:element ref="eta"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<!-- definition of the root element -->
+<xs:element name="model">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="name" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="trap" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>
