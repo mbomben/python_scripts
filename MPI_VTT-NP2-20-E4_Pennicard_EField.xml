@@ -14,7 +14,7 @@ xsi:noNamespaceSchemaLocation="superimpose.xsd">
   <axe>
     <name>Y</name>
     <label>Electric Field [V/cm]</label>
-    <min>0</min>
+    <min>1</min>
     <max>6e4</max>
   </axe>
   <curve>
