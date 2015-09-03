@@ -5,8 +5,8 @@ import pylab as plt
 
 import xml.etree.ElementTree as ET
 
-def etreeminiparser(filename,show): 
-  filename = filename[0]
+def etreeminiparser(filename,show=False): 
+  #filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
   plot = superimpose.plot()
@@ -102,4 +102,5 @@ if (__name__ == "__main__"):
     exit(2)
   if (len(sys.argv) == 3 ):
     show = True
-  etreeminiparser(sys.argv[1:],show)
+  name = sys.argv[1]
+  etreeminiparser(name,show)
