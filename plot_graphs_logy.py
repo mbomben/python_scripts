@@ -6,7 +6,7 @@ import pylab as plt
 import xml.etree.ElementTree as ET
 
 def etreeminiparser(filename): 
-  filename = filename[0]
+  #filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
   plot = superimpose.plot()
@@ -93,4 +93,5 @@ if (__name__ == "__main__"):
   if (len(sys.argv) != 2 ):
     print "Usage:",sys.argv[0],"<filename.xml>\n";
     exit(2)
-  etreeminiparser(sys.argv[1:])
+  name = sys.argv[1]
+  etreeminiparser(name)
