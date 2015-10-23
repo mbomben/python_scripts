@@ -1,7 +1,6 @@
 import sys
 import root_multi_graph
-import pylab as plt
-from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend
+from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F
 from array import array
 
 import xml.etree.ElementTree as ET
@@ -56,43 +55,47 @@ def etreeminiparser(filename,show=False):
     gr.SetLineWidth(int(curve.get_line().get_size()))
     gr.SetLineColor(curve.get_line().get_color())
     mgr.Add(gr)
-    leg.AddEntry(gr,gr.GetTitle(),'elp')
+    leg.AddEntry(gr,gr.GetTitle(),'lp')
 
 
 # real design part
 
 
 
-  c1 = TCanvas('c1','',2000,1000)
+  c1 = TCanvas('c1',title,2000,1000)
   c1.cd()
+  gPad.Range(minX,maxX,minY,maxY)
+  gPad.Draw()
   mgr.Draw('ALP')
   minX = Xaxe.get_min()
   maxX = Xaxe.get_max()
+  print 'X range',minX,maxX
   minY = Yaxe.get_min()
   maxY = Yaxe.get_max()
+  print 'Y range',minY,maxY
   mgr.GetXaxis().SetRangeUser(minX,maxX)
   mgr.GetXaxis().SetTitle(Xaxe.get_label())
-  mgr.GetYaxis().SetRangeUser(minY,maxY*1.2)
+  mgr.GetYaxis().SetRangeUser(minY,maxY)
   mgr.GetYaxis().SetTitle(Yaxe.get_label())
+  hmg = TH1F()
+  hmg = mgr.GetHistogram();
+  hmg.SetBins(100000000,hmg.GetXaxis().GetXmin(),hmg.GetXaxis().GetXmax());
+  gPad.Modified()
+  gPad.Update()
+
   c1.SetGrid(1,1)
   c1.SetTicks(1)
   leg.Draw()
   #leg.SetFillColor(10)
-  c1.Update()
-#  plt.axis( [minX,maxX,minY,maxY])
-#  plt.legend(loc='upper right')
-#  plt.grid(True)
-#  plt.title(title)
-#  plt.xlabel(Xaxe.get_label())
-#  plt.ylabel(Yaxe.get_label())
   save_pic = saveFile + '.png'
   print "Results will be saved in:\n\t",save_pic
   c1.SaveAs(save_pic)
   save_pic = saveFile + '.pdf'
   print "Results will be saved in:\n\t",save_pic,
   c1.SaveAs(save_pic)
-#  if ( show ):
-#    plt.show()
+  save_pic = saveFile + '.C'
+  print "Results will be saved in:\n\t",save_pic,
+  c1.SaveAs(save_pic)
 
 if (__name__ == "__main__"):
   show = False
