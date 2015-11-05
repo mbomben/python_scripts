@@ -10,7 +10,8 @@ basename=os.path.splitext(filename)[0]
 #print os.path.splitext(filename)[1]
 ext = os.path.splitext(filename)[1]
 
-newname = basename + "_tmax" + ext
+s_tmax = "%s%2.1e" % ('_',tmax)
+newname = basename + s_tmax + ext
 print "The tmax file is:\n\t",newname
 f = open(filename,'r')
 g = open(newname,'w')

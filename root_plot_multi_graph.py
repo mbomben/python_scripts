@@ -62,17 +62,17 @@ def etreeminiparser(filename,show=False):
 
 
 
-  c1 = TCanvas('c1',title,2000,1000)
-  c1.cd()
-  gPad.Range(minX,maxX,minY,maxY)
-  gPad.Draw()
-  mgr.Draw('ALP')
   minX = Xaxe.get_min()
   maxX = Xaxe.get_max()
   print 'X range',minX,maxX
   minY = Yaxe.get_min()
   maxY = Yaxe.get_max()
   print 'Y range',minY,maxY
+  c1 = TCanvas('c1',title,2000,1000)
+  c1.cd()
+  gPad.Range(minX,maxX,minY,maxY)
+  gPad.Draw()
+  mgr.Draw('ALP')
   mgr.GetXaxis().SetRangeUser(minX,maxX)
   mgr.GetXaxis().SetTitle(Xaxe.get_label())
   mgr.GetYaxis().SetRangeUser(minY,maxY)
