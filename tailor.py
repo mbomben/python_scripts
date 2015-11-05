@@ -15,10 +15,12 @@ print "The tailored file is:\n\t",newname
 f = open(filename,'r')
 g = open(newname,'w')
 lines = f.readlines()
+nlines = len(lines)
+maxlines = nlines - num_of_lines_to_cut - 1
 index = -1
 for line in lines:
   index = index +1
-  if ( index > num_of_lines_to_cut ):
+  if ( index > maxlines ):
     continue
   else:
     tmp = line.split()
