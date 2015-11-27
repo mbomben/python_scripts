@@ -31,9 +31,9 @@ def write_ratio(filename1,filename2,savefile):
       1+1
     else:
       asymm = abs(tmp1_field1-tmp2_field1)/(tmp1_field1+tmp2_field1)
-    if (asymm > max_diff):
-      print "lines #",(line+1),"differ more than",max_diff,":",asymm
-      return -2
+      if (asymm > max_diff):
+        print "lines #",(line+1),"differ more than",max_diff,":",asymm
+        return -2
     tmp1_field2 = float(tmp1[1])
     tmp2_field2 = float(tmp2[1])
     assert(tmp2_field2)
