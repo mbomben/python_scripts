@@ -27,7 +27,10 @@ def write_ratio(filename1,filename2,savefile):
     tmp2 = input_lines2[line].split()
     tmp1_field1 = float(tmp1[0])
     tmp2_field1 = float(tmp2[0])
-    asymm = abs(tmp1_field1-tmp2_field1)/(tmp1_field1+tmp2_field1)
+    if ( tmp1_field1 == 0 and tmp2_field1 == 0 ):
+      1+1
+    else:
+      asymm = abs(tmp1_field1-tmp2_field1)/(tmp1_field1+tmp2_field1)
     if (asymm > max_diff):
       print "lines #",(line+1),"differ more than",max_diff,":",asymm
       return -2
