@@ -18,8 +18,6 @@ def integrateCurr(file_name,t0):
   input_file.close()
   for input_line in input_lines:
     index += 1
-    if ( index < 4 ):
-      continue
     tmp = input_line.split()
     t = float(tmp[0])
     I = float(tmp[1])
@@ -37,12 +35,16 @@ def integrateCurr(file_name,t0):
   
   splrepint = interpolate.splrep(sall_time, sall_current, s=0)
   currentnew = interpolate.splev(sall_time, splrepint, der=0)
-  
+  initial_time = [t0/2.0]
+  sinitial_time = asarray(initial_time)
   
   
   charge = interpolate.splint(sall_time[0], sall_time[len(all_time)-1], splrepint)
   dt = sall_time[len(sall_time)-1]-sall_time[0]
   Ileak = sall_current[len(sall_time)-1]
+  currentnew = interpolate.splev(sinitial_time, splrepint, der=0)
+  #print "Ileak =", Ileak
+  #print "currentnew =", currentnew
   charge -= Ileak*dt
   return charge
   
