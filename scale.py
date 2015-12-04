@@ -23,7 +23,7 @@ def scale(filename,scale_factor):
     X = float(tmp[0])
     Y = float(tmp[1])
     newY = Y*scale_factor
-    output_file.write('%f %f\n' % (X,newY))
+    output_file.write('%f %e\n' % (X,newY))
 
 if __name__ == "__main__":
   if (len(sys.argv)!=3):
