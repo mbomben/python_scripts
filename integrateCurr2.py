@@ -43,7 +43,11 @@ def integrateCurr2(IT_filename,t0,t1,IV_filename,Vbias):
   
   
   charge = interpolate.splint(sall_time[0], sall_time[len(all_time)-1], splrepint)
-  dt = sall_time[len(sall_time)-1]-sall_time[0]
+  dt = 0
+  if ( t1 < sall_time[len(sall_time)-1] ):
+    dt = t1--sall_time[0]
+  else:
+    dt = sall_time[len(sall_time)-1]-sall_time[0]
   Ileak = sall_current[len(sall_time)-1]
   currentnew = mini_interpolate(IV_filename,Vbias)
   #print "Ileak =", Ileak
