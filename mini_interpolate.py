@@ -24,6 +24,7 @@ def mini_interpolate(original_file,point):
    
   sall_time = asarray(all_time)
   sall_current = asarray(all_current)
+  point = float(point)
   spoint = asarray(point)
   splrepint = interpolate.splrep(sall_time, sall_current)
   currentnew = interpolate.splev(spoint, splrepint, der=0)
