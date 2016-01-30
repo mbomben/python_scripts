@@ -12,6 +12,8 @@ def integrateCurr2(IT_filename,t0,t1,IV_filename,Vbias):
   input_file = open(IT_filename,'r')
   t0 = float(t0)
   t1 = float(t1)
+  Vbias = float(Vbias)
+  IV_filename = str(IV_filename)
   index = -1
   all_time = []
   all_current = []
@@ -45,7 +47,7 @@ def integrateCurr2(IT_filename,t0,t1,IV_filename,Vbias):
   charge = interpolate.splint(sall_time[0], sall_time[len(all_time)-1], splrepint)
   dt = 0
   if ( t1 < sall_time[len(sall_time)-1] ):
-    dt = t1--sall_time[0]
+    dt = t1-sall_time[0]
   else:
     dt = sall_time[len(sall_time)-1]-sall_time[0]
   Ileak = sall_current[len(sall_time)-1]
