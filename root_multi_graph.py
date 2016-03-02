@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Sun Oct 18 21:20:33 2015 by generateDS.py version 2.15b.
+# Generated Wed Mar  2 11:29:15 2016 by generateDS.py version 2.20a.
 #
 # Command line options:
 #   ('-f', '')
@@ -13,10 +13,10 @@
 #   ../root_multi_graph.xsd
 #
 # Command line:
-#   generateDS.py -f -o "root_multi_graph.py" -s "sub_root_multi_graph.py" ../root_multi_graph.xsd
+#   ./generateDS.py -f -o "root_multi_graph.py" -s "sub_root_multi_graph.py" ../root_multi_graph.xsd
 #
 # Current working directory (os.getcwd()):
-#   generateDS-2.15b
+#   generateDS-2.20a0
 #
 
 import sys
@@ -28,14 +28,18 @@ from lxml import etree as etree_
 
 
 Validate_simpletypes_ = True
+if sys.version_info.major == 2:
+    BaseStrType_ = basestring
+else:
+    BaseStrType_ = str
 
 
-def parsexml_(*args, **kwargs):
-    if 'parser' not in kwargs:
+def parsexml_(infile, parser=None, **kwargs):
+    if parser is None:
         # Use the lxml ElementTree compatible parser so that, e.g.,
         #   we ignore comments.
-        kwargs['parser'] = etree_.ETCompatXMLParser()
-    doc = etree_.parse(*args, **kwargs)
+        parser = etree_.ETCompatXMLParser()
+    doc = etree_.parse(infile, parser=parser, **kwargs)
     return doc
 
 #
@@ -221,7 +225,8 @@ except ImportError as exp:
                                 _svalue += '+'
                             hours = total_seconds // 3600
                             minutes = (total_seconds - (hours * 3600)) // 60
-                            _svalue += '{0:02d}:{1:02d}'.format(hours, minutes)
+                            _svalue += '{0:02d}:{1:02d}'.format(
+                                hours, minutes)
             except AttributeError:
                 pass
             return _svalue
@@ -346,6 +351,20 @@ except ImportError as exp:
         @classmethod
         def gds_reverse_node_mapping(cls, mapping):
             return dict(((v, k) for k, v in mapping.iteritems()))
+        @staticmethod
+        def gds_encode(instring):
+            if sys.version_info.major == 2:
+                return instring.encode(ExternalEncoding)
+            else:
+                return instring
+
+    def getSubclassFromModule_(module, class_):
+        '''Get the subclass of a class from a specific module.'''
+        name = class_.__name__ + 'Sub'
+        if hasattr(module, name):
+            return getattr(module, name)
+        else:
+            return None
 
 
 #
@@ -373,6 +392,10 @@ String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
 CDATA_pattern_ = re_.compile(r"<!\[CDATA\[.*?\]\]>", re_.DOTALL)
 
+# Change this to redirect the generated superclass module to use a
+# specific subclass module.
+CurrentSubclassModule_ = None
+
 #
 # Support/utility functions.
 #
@@ -388,8 +411,7 @@ def quote_xml(inStr):
     "Escape markup chars, but do not modify CDATA sections."
     if not inStr:
         return ''
-    s1 = (isinstance(inStr, basestring) and inStr or
-          '%s' % inStr)
+    s1 = (isinstance(inStr, BaseStrType_) and inStr or '%s' % inStr)
     s2 = ''
     pos = 0
     matchobjects = CDATA_pattern_.finditer(s1)
@@ -411,8 +433,7 @@ def quote_xml_aux(inStr):
 
 
 def quote_attrib(inStr):
-    s1 = (isinstance(inStr, basestring) and inStr or
-          '%s' % inStr)
+    s1 = (isinstance(inStr, BaseStrType_) and inStr or '%s' % inStr)
     s1 = s1.replace('&', '&amp;')
     s1 = s1.replace('<', '&lt;')
     s1 = s1.replace('>', '&gt;')
@@ -472,11 +493,7 @@ class GDSParseError(Exception):
 
 
 def raise_parse_error(node, msg):
-    if XMLParser_import_library == XMLParser_import_lxml:
-        msg = '%s (element %s/line %d)' % (
-            msg, node.tag, node.sourceline, )
-    else:
-        msg = '%s (element %s)' % (msg, node.tag, )
+    msg = '%s (element %s/line %d)' % (msg, node.tag, node.sourceline, )
     raise GDSParseError(msg)
 
 
@@ -630,6 +647,11 @@ class line(GeneratedsSuper):
         self.style = style
         self.color = color
     def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, line)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
         if line.subclass:
             return line.subclass(*args_, **kwargs_)
         else:
@@ -684,24 +706,6 @@ class line(GeneratedsSuper):
         if self.color is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scolor>%s</%scolor>%s' % (namespace_, self.gds_format_integer(self.color, input_name='color'), namespace_, eol_))
-    def exportLiteral(self, outfile, level, name_='line'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.size is not None:
-            showIndent(outfile, level)
-            outfile.write('size=%e,\n' % self.size)
-        if self.style is not None:
-            showIndent(outfile, level)
-            outfile.write('style=%d,\n' % self.style)
-        if self.color is not None:
-            showIndent(outfile, level)
-            outfile.write('color=%d,\n' % self.color)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -748,6 +752,11 @@ class marker(GeneratedsSuper):
         self.style = style
         self.color = color
     def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, marker)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
         if marker.subclass:
             return marker.subclass(*args_, **kwargs_)
         else:
@@ -802,24 +811,6 @@ class marker(GeneratedsSuper):
         if self.color is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scolor>%s</%scolor>%s' % (namespace_, self.gds_format_integer(self.color, input_name='color'), namespace_, eol_))
-    def exportLiteral(self, outfile, level, name_='marker'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.size is not None:
-            showIndent(outfile, level)
-            outfile.write('size=%e,\n' % self.size)
-        if self.style is not None:
-            showIndent(outfile, level)
-            outfile.write('style=%d,\n' % self.style)
-        if self.color is not None:
-            showIndent(outfile, level)
-            outfile.write('color=%d,\n' % self.color)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -867,6 +858,11 @@ class axe(GeneratedsSuper):
         self.min = min
         self.max = max
     def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, axe)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
         if axe.subclass:
             return axe.subclass(*args_, **kwargs_)
         else:
@@ -917,37 +913,16 @@ class axe(GeneratedsSuper):
             eol_ = ''
         if self.name is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
+            outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.name), input_name='name')), namespace_, eol_))
         if self.label is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%slabel>%s</%slabel>%s' % (namespace_, self.gds_format_string(quote_xml(self.label).encode(ExternalEncoding), input_name='label'), namespace_, eol_))
+            outfile.write('<%slabel>%s</%slabel>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.label), input_name='label')), namespace_, eol_))
         if self.min is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smin>%s</%smin>%s' % (namespace_, self.gds_format_double(self.min, input_name='min'), namespace_, eol_))
         if self.max is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smax>%s</%smax>%s' % (namespace_, self.gds_format_double(self.max, input_name='max'), namespace_, eol_))
-    def exportLiteral(self, outfile, level, name_='axe'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.name is not None:
-            showIndent(outfile, level)
-            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
-        if self.label is not None:
-            showIndent(outfile, level)
-            outfile.write('label=%s,\n' % quote_python(self.label).encode(ExternalEncoding))
-        if self.min is not None:
-            showIndent(outfile, level)
-            outfile.write('min=%e,\n' % self.min)
-        if self.max is not None:
-            showIndent(outfile, level)
-            outfile.write('max=%e,\n' % self.max)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -995,6 +970,11 @@ class curve(GeneratedsSuper):
         self.marker = marker
         self.line = line
     def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, curve)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
         if curve.subclass:
             return curve.subclass(*args_, **kwargs_)
         else:
@@ -1045,41 +1025,14 @@ class curve(GeneratedsSuper):
             eol_ = ''
         if self.data is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%sdata>%s</%sdata>%s' % (namespace_, self.gds_format_string(quote_xml(self.data).encode(ExternalEncoding), input_name='data'), namespace_, eol_))
+            outfile.write('<%sdata>%s</%sdata>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.data), input_name='data')), namespace_, eol_))
         if self.label is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%slabel>%s</%slabel>%s' % (namespace_, self.gds_format_string(quote_xml(self.label).encode(ExternalEncoding), input_name='label'), namespace_, eol_))
+            outfile.write('<%slabel>%s</%slabel>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.label), input_name='label')), namespace_, eol_))
         if self.marker is not None:
             self.marker.export(outfile, level, namespace_, name_='marker', pretty_print=pretty_print)
         if self.line is not None:
             self.line.export(outfile, level, namespace_, name_='line', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='curve'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.data is not None:
-            showIndent(outfile, level)
-            outfile.write('data=%s,\n' % quote_python(self.data).encode(ExternalEncoding))
-        if self.label is not None:
-            showIndent(outfile, level)
-            outfile.write('label=%s,\n' % quote_python(self.label).encode(ExternalEncoding))
-        if self.marker is not None:
-            showIndent(outfile, level)
-            outfile.write('marker=model_.marker(\n')
-            self.marker.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.line is not None:
-            showIndent(outfile, level)
-            outfile.write('line=model_.line(\n')
-            self.line.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1127,6 +1080,11 @@ class plot(GeneratedsSuper):
         else:
             self.curve = curve
     def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, plot)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
         if plot.subclass:
             return plot.subclass(*args_, **kwargs_)
         else:
@@ -1183,53 +1141,14 @@ class plot(GeneratedsSuper):
             eol_ = ''
         if self.filename is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%sfilename>%s</%sfilename>%s' % (namespace_, self.gds_format_string(quote_xml(self.filename).encode(ExternalEncoding), input_name='filename'), namespace_, eol_))
+            outfile.write('<%sfilename>%s</%sfilename>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.filename), input_name='filename')), namespace_, eol_))
         if self.title is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%stitle>%s</%stitle>%s' % (namespace_, self.gds_format_string(quote_xml(self.title).encode(ExternalEncoding), input_name='title'), namespace_, eol_))
+            outfile.write('<%stitle>%s</%stitle>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.title), input_name='title')), namespace_, eol_))
         for axe_ in self.axe:
             axe_.export(outfile, level, namespace_, name_='axe', pretty_print=pretty_print)
         for curve_ in self.curve:
             curve_.export(outfile, level, namespace_, name_='curve', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='plot'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.filename is not None:
-            showIndent(outfile, level)
-            outfile.write('filename=%s,\n' % quote_python(self.filename).encode(ExternalEncoding))
-        if self.title is not None:
-            showIndent(outfile, level)
-            outfile.write('title=%s,\n' % quote_python(self.title).encode(ExternalEncoding))
-        showIndent(outfile, level)
-        outfile.write('axe=[\n')
-        level += 1
-        for axe_ in self.axe:
-            showIndent(outfile, level)
-            outfile.write('model_.axe(\n')
-            axe_.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        showIndent(outfile, level)
-        outfile.write('curve=[\n')
-        level += 1
-        for curve_ in self.curve:
-            showIndent(outfile, level)
-            outfile.write('model_.curve(\n')
-            curve_.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1284,7 +1203,8 @@ def get_root_tag(node):
 
 
 def parse(inFileName, silence=False):
-    doc = parsexml_(inFileName)
+    parser = None
+    doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
@@ -1304,7 +1224,8 @@ def parse(inFileName, silence=False):
 
 
 def parseEtree(inFileName, silence=False):
-    doc = parsexml_(inFileName)
+    parser = None
+    doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
@@ -1328,7 +1249,8 @@ def parseEtree(inFileName, silence=False):
 
 def parseString(inString, silence=False):
     from StringIO import StringIO
-    doc = parsexml_(StringIO(inString))
+    parser = None
+    doc = parsexml_(StringIO(inString), parser)
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
@@ -1347,7 +1269,8 @@ def parseString(inString, silence=False):
 
 
 def parseLiteral(inFileName, silence=False):
-    doc = parsexml_(inFileName)
+    parser = None
+    doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
