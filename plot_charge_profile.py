@@ -25,7 +25,7 @@ t0 = args.t0[0]
 nsteps = int((y0max-y0min)/dY)+1
 print "expected number of steps:",nsteps
 
-fixed_appendix = '_PX2_Current.dat'
+fixed_appendix = '_PX2_Current_pruned.dat'
 file_name = ''
 
 save_file = template+'_ChargeProfile.txt'
