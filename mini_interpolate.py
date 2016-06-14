@@ -38,4 +38,5 @@ if __name__ == "__main__":
     exit(2)
   original_filename = sys.argv[1]
   point  = float(sys.argv[2])
-  mini_interpolate(original_filename,point)
+  currentnew = mini_interpolate(original_filename,point)
+  print currentnew
