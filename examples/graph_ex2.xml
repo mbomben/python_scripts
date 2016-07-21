@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plot 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="root_multi_graph.xsd">
+<filename>example_hconc</filename>
+<title>Hole concentration after 10$^{2}$ ps</title>
+  <axe>
+    <name>X</name>
+    <label>X [$\mu m$]</label>
+    <min>-75</min>
+    <max>75</max>
+    <log>0</log>
+  </axe>
+  <axe>
+    <name>Y</name>
+    <label>Y [$\mu m$]</label>
+    <min>0</min>
+    <max>50</max>
+    <log>0</log>
+  </axe>
+  <axe>
+    <name>Z</name>
+    <label>Hole conc. [cm$^{-3}$]</label>
+    <min>1e3</min>
+    <max>1e14</max>
+    <log>1</log>
+  </axe>
+  <graph>
+    <data>hConc_100ps.dat</data>
+    <binsize>5</binsize>
+  </graph>
+</plot>

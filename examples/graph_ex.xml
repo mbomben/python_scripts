@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plot 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="root_multi_graph.xsd">
+<filename>example_potential</filename>
+  <title>Electrical Potential</title>
+  <axe>
+    <name>X</name>
+    <label>$X\, [\mu m]$</label>
+    <min>-75</min>
+    <max>75</max>
+    <log>0</log>
+  </axe>
+  <axe>
+    <name>Y</name>
+    <label>$X\, [\mu m]$</label>
+    <min>0</min>
+    <max>50</max>
+    <log>0</log>
+  </axe>
+  <axe>
+    <name>Z</name>
+    <label>Potential [V]</label>
+    <min>-500</min>
+    <max>0</max>
+    <log>0</log>
+  </axe>
+  <graph>
+    <data>potential.dat</data>
+    <binsize>5</binsize>
+  </graph>
+</plot>
