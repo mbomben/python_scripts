@@ -41,9 +41,9 @@ def etreeminiparser(filename,show=False):
   maxY = 0
 
 # here starts the ROOT part
-  mgr = TMultiGraph('mgr','')
-  leg = TLegend(.6,.65,.89,.89)
   tstring_title = TString(title)
+  mgr = TMultiGraph('mgr',tstring_title.Data())
+  leg = TLegend(.6,.65,.89,.89)
   #leg.SetHeader(tstring_title.Data())
   curves = plot.get_curve()
   for curve in curves:
