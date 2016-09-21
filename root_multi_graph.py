@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Mar  2 11:29:15 2016 by generateDS.py version 2.20a.
+# Generated Wed Sep 21 11:17:18 2016 by generateDS.py version 2.23a.
 #
 # Command line options:
 #   ('-f', '')
@@ -16,7 +16,7 @@
 #   ./generateDS.py -f -o "root_multi_graph.py" -s "sub_root_multi_graph.py" ../root_multi_graph.xsd
 #
 # Current working directory (os.getcwd()):
-#   generateDS-2.20a0
+#   generateDS-2.23a0
 #
 
 import sys
@@ -24,7 +24,10 @@ import re as re_
 import base64
 import datetime as datetime_
 import warnings as warnings_
-from lxml import etree as etree_
+try:
+    from lxml import etree as etree_
+except ImportError:
+    from xml.etree import ElementTree as etree_
 
 
 Validate_simpletypes_ = True
@@ -38,7 +41,11 @@ def parsexml_(infile, parser=None, **kwargs):
     if parser is None:
         # Use the lxml ElementTree compatible parser so that, e.g.,
         #   we ignore comments.
-        parser = etree_.ETCompatXMLParser()
+        try:
+            parser = etree_.ETCompatXMLParser()
+        except AttributeError:
+            # fallback to xml.etree
+            parser = etree_.XMLParser()
     doc = etree_.parse(infile, parser=parser, **kwargs)
     return doc
 
@@ -641,7 +648,7 @@ def _cast(typ, value):
 class line(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, size=None, style=None, color=None):
+    def __init__(self, size=1.0, style=1, color=1):
         self.original_tagname_ = None
         self.size = size
         self.style = style
@@ -665,9 +672,9 @@ class line(GeneratedsSuper):
     def set_color(self, color): self.color = color
     def hasContent_(self):
         if (
-            self.size is not None or
-            self.style is not None or
-            self.color is not None
+            self.size != 1.0 or
+            self.style != 1 or
+            self.color != 1
         ):
             return True
         else:
@@ -697,13 +704,13 @@ class line(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.size is not None:
+        if self.size != 1.0:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssize>%s</%ssize>%s' % (namespace_, self.gds_format_double(self.size, input_name='size'), namespace_, eol_))
-        if self.style is not None:
+        if self.style != 1:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstyle>%s</%sstyle>%s' % (namespace_, self.gds_format_integer(self.style, input_name='style'), namespace_, eol_))
-        if self.color is not None:
+        if self.color != 1:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scolor>%s</%scolor>%s' % (namespace_, self.gds_format_integer(self.color, input_name='color'), namespace_, eol_))
     def build(self, node):
@@ -746,7 +753,7 @@ class line(GeneratedsSuper):
 class marker(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, size=None, style=None, color=None):
+    def __init__(self, size=1.0, style=20, color=1):
         self.original_tagname_ = None
         self.size = size
         self.style = style
@@ -770,9 +777,9 @@ class marker(GeneratedsSuper):
     def set_color(self, color): self.color = color
     def hasContent_(self):
         if (
-            self.size is not None or
-            self.style is not None or
-            self.color is not None
+            self.size != 1.0 or
+            self.style != 20 or
+            self.color != 1
         ):
             return True
         else:
@@ -802,13 +809,13 @@ class marker(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.size is not None:
+        if self.size != 1.0:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssize>%s</%ssize>%s' % (namespace_, self.gds_format_double(self.size, input_name='size'), namespace_, eol_))
-        if self.style is not None:
+        if self.style != 20:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstyle>%s</%sstyle>%s' % (namespace_, self.gds_format_integer(self.style, input_name='style'), namespace_, eol_))
-        if self.color is not None:
+        if self.color != 1:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scolor>%s</%scolor>%s' % (namespace_, self.gds_format_integer(self.color, input_name='color'), namespace_, eol_))
     def build(self, node):
@@ -851,12 +858,13 @@ class marker(GeneratedsSuper):
 class axe(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, name=None, label=None, min=None, max=None):
+    def __init__(self, name=None, label=None, min=None, max=None, log=False):
         self.original_tagname_ = None
         self.name = name
         self.label = label
         self.min = min
         self.max = max
+        self.log = log
     def factory(*args_, **kwargs_):
         if CurrentSubclassModule_ is not None:
             subclass = getSubclassFromModule_(
@@ -876,12 +884,15 @@ class axe(GeneratedsSuper):
     def set_min(self, min): self.min = min
     def get_max(self): return self.max
     def set_max(self, max): self.max = max
+    def get_log(self): return self.log
+    def set_log(self, log): self.log = log
     def hasContent_(self):
         if (
             self.name is not None or
             self.label is not None or
             self.min is not None or
-            self.max is not None
+            self.max is not None or
+            self.log
         ):
             return True
         else:
@@ -923,6 +934,9 @@ class axe(GeneratedsSuper):
         if self.max is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smax>%s</%smax>%s' % (namespace_, self.gds_format_double(self.max, input_name='max'), namespace_, eol_))
+        if self.log:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%slog>%s</%slog>%s' % (namespace_, self.gds_format_boolean(self.log, input_name='log'), namespace_, eol_))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -957,6 +971,16 @@ class axe(GeneratedsSuper):
                 raise_parse_error(child_, 'requires float or double: %s' % exp)
             fval_ = self.gds_validate_float(fval_, node, 'max')
             self.max = fval_
+        elif nodeName_ == 'log':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'log')
+            self.log = ival_
 # end class axe
 
 
@@ -1064,10 +1088,130 @@ class curve(GeneratedsSuper):
 # end class curve
 
 
+class legend(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, x1=0.6, x2=0.89, y1=0.65, y2=0.89):
+        self.original_tagname_ = None
+        self.x1 = x1
+        self.x2 = x2
+        self.y1 = y1
+        self.y2 = y2
+    def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, legend)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
+        if legend.subclass:
+            return legend.subclass(*args_, **kwargs_)
+        else:
+            return legend(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_x1(self): return self.x1
+    def set_x1(self, x1): self.x1 = x1
+    def get_x2(self): return self.x2
+    def set_x2(self, x2): self.x2 = x2
+    def get_y1(self): return self.y1
+    def set_y1(self, y1): self.y1 = y1
+    def get_y2(self): return self.y2
+    def set_y2(self, y2): self.y2 = y2
+    def hasContent_(self):
+        if (
+            self.x1 != 0.6 or
+            self.x2 != 0.89 or
+            self.y1 != 0.65 or
+            self.y2 != 0.89
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='legend', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.original_tagname_ is not None:
+            name_ = self.original_tagname_
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='legend')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_='', name_='legend', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='legend'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='legend', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.x1 != 0.6:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sx1>%s</%sx1>%s' % (namespace_, self.gds_format_double(self.x1, input_name='x1'), namespace_, eol_))
+        if self.x2 != 0.89:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sx2>%s</%sx2>%s' % (namespace_, self.gds_format_double(self.x2, input_name='x2'), namespace_, eol_))
+        if self.y1 != 0.65:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sy1>%s</%sy1>%s' % (namespace_, self.gds_format_double(self.y1, input_name='y1'), namespace_, eol_))
+        if self.y2 != 0.89:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sy2>%s</%sy2>%s' % (namespace_, self.gds_format_double(self.y2, input_name='y2'), namespace_, eol_))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'x1':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'x1')
+            self.x1 = fval_
+        elif nodeName_ == 'x2':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'x2')
+            self.x2 = fval_
+        elif nodeName_ == 'y1':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'y1')
+            self.y1 = fval_
+        elif nodeName_ == 'y2':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'y2')
+            self.y2 = fval_
+# end class legend
+
+
 class plot(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, filename=None, title=None, axe=None, curve=None):
+    def __init__(self, filename=None, title='', axe=None, legend=None, curve=None):
         self.original_tagname_ = None
         self.filename = filename
         self.title = title
@@ -1075,6 +1219,7 @@ class plot(GeneratedsSuper):
             self.axe = []
         else:
             self.axe = axe
+        self.legend = legend
         if curve is None:
             self.curve = []
         else:
@@ -1099,6 +1244,8 @@ class plot(GeneratedsSuper):
     def add_axe(self, value): self.axe.append(value)
     def insert_axe_at(self, index, value): self.axe.insert(index, value)
     def replace_axe_at(self, index, value): self.axe[index] = value
+    def get_legend(self): return self.legend
+    def set_legend(self, legend): self.legend = legend
     def get_curve(self): return self.curve
     def set_curve(self, curve): self.curve = curve
     def add_curve(self, value): self.curve.append(value)
@@ -1107,8 +1254,9 @@ class plot(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.filename is not None or
-            self.title is not None or
+            self.title != "" or
             self.axe or
+            self.legend is not None or
             self.curve
         ):
             return True
@@ -1142,11 +1290,13 @@ class plot(GeneratedsSuper):
         if self.filename is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfilename>%s</%sfilename>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.filename), input_name='filename')), namespace_, eol_))
-        if self.title is not None:
+        if self.title != "":
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stitle>%s</%stitle>%s' % (namespace_, self.gds_encode(self.gds_format_string(quote_xml(self.title), input_name='title')), namespace_, eol_))
         for axe_ in self.axe:
             axe_.export(outfile, level, namespace_, name_='axe', pretty_print=pretty_print)
+        if self.legend is not None:
+            self.legend.export(outfile, level, namespace_, name_='legend', pretty_print=pretty_print)
         for curve_ in self.curve:
             curve_.export(outfile, level, namespace_, name_='curve', pretty_print=pretty_print)
     def build(self, node):
@@ -1172,6 +1322,11 @@ class plot(GeneratedsSuper):
             obj_.build(child_)
             self.axe.append(obj_)
             obj_.original_tagname_ = 'axe'
+        elif nodeName_ == 'legend':
+            obj_ = legend.factory()
+            obj_.build(child_)
+            self.legend = obj_
+            obj_.original_tagname_ = 'legend'
         elif nodeName_ == 'curve':
             obj_ = curve.factory()
             obj_.build(child_)
@@ -1305,6 +1460,7 @@ if __name__ == '__main__':
 __all__ = [
     "axe",
     "curve",
+    "legend",
     "line",
     "marker",
     "plot"

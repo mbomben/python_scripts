@@ -8,14 +8,40 @@
 <xs:element name="filename" type="xs:string"/>
 <xs:element name="min" type="xs:double"/>
 <xs:element name="max" type="xs:double"/>
+<xs:element name="log" type="xs:boolean"/>
 <xs:element name="label" type="xs:string"/>
-<xs:element name="marker" type="xs:string"/>
-<xs:element name="color" type="xs:string"/>
+<xs:element name="color" type="xs:integer"/>
+<xs:element name="style" type="xs:integer"/>
+<xs:element name="size" type="xs:double"/>
+<xs:element name="x1" type="xs:double"/>
+<xs:element name="x2" type="xs:double"/>
+<xs:element name="y1" type="xs:double"/>
+<xs:element name="y2" type="xs:double"/>
 
 <!-- definition of attributes -->
 <xs:attribute name="orderid" type="xs:string"/>
 
 <!-- definition of complex elements -->
+
+<xs:element name="line">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="size"  minOccurs="0" maxOccurs="1" default="1.0"/>
+      <xs:element ref="style" minOccurs="0" maxOccurs="1" default="1"/>
+      <xs:element ref="color" minOccurs="0" maxOccurs="1" default="1"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="marker">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="size"  minOccurs="0" maxOccurs="1" default="1.0"/>
+      <xs:element ref="style" minOccurs="0" maxOccurs="1" default="20"/>
+      <xs:element ref="color" minOccurs="0" maxOccurs="1" default="1"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
 
 <xs:element name="axe">
   <xs:complexType>
@@ -24,6 +50,7 @@
       <xs:element ref="label"/>
       <xs:element ref="min"/>
       <xs:element ref="max"/>
+      <xs:element ref="log" default="false" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 </xs:element>
@@ -33,21 +60,32 @@
     <xs:sequence>
       <xs:element ref="data"/>
       <xs:element ref="label"/>
-      <xs:element ref="marker"/>
-      <xs:element ref="color"/>
+      <xs:element ref="marker" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="line" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType></xs:element>
+  
+  <xs:element name="legend">
+  <xs:complexType>
+    <xs:element ref="x1" minOccurs="0" maxOccurs="1" default="0.6"/>
+    <xs:element ref="x2" minOccurs="0" maxOccurs="1" default="0.89"/>
+    <xs:element ref="y1" minOccurs="0" maxOccurs="1" default="0.65"/>
+    <xs:element ref="y2" minOccurs="0" maxOccurs="1" default="0.89"/>
+  </xs:complexType>
+ </xs:element>
 
 <!-- definition of the root element -->
 <xs:element name="plot">
   <xs:complexType>
     <xs:sequence>
       <xs:element ref="filename"/>
-      <xs:element ref="title"/>
+      <xs:element ref="title" minOccurs="0" maxOccurs="1" default=""/>
       <xs:element ref="axe" minOccurs="2" maxOccurs="2"/>
+      <xs:element ref="legend" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="curve" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:element>
+
 
 </xs:schema>

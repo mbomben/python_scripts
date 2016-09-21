@@ -5,13 +5,6 @@ from array import array
 
 import xml.etree.ElementTree as ET
 
-defaultMarkerColor = 1
-defaultMarkerStyle = 20
-defaultMarkerSize  = 1.0
-
-defaultLineColor = 1
-defaultLineStyle = 1
-defaultLineSize  = 0
 
 def etreeminiparser(filename,show=False): 
   #filename = filename[0]
@@ -43,7 +36,15 @@ def etreeminiparser(filename,show=False):
 # here starts the ROOT part
   tstring_title = TString(title)
   mgr = TMultiGraph('mgr',tstring_title.Data())
-  leg = TLegend(.6,.65,.89,.89)
+  if ( plot.get_legend() ):
+    leg = plot.get_legend()
+    x1 = leg.get_x1()
+    x2 = leg.get_x2()
+    y1 = leg.get_y1()
+    y2 = leg.get_y2()
+    leg = TLegend(x1,y1,x2,y2)
+  else:  
+    leg = TLegend(.6,.65,.89,.89)
   #leg.SetHeader(tstring_title.Data())
   curves = plot.get_curve()
   for curve in curves:
@@ -112,6 +113,8 @@ def etreeminiparser(filename,show=False):
   hmg = TH1F()
   hmg = mgr.GetHistogram();
   hmg.SetBins(100000000,hmg.GetXaxis().GetXmin(),hmg.GetXaxis().GetXmax());
+  gPad.SetLogx(Xaxe.get_log())
+  gPad.SetLogy(Yaxe.get_log())
   gPad.Modified()
   gPad.Update()
 

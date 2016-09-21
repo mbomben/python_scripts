@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plot 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="root_multi_graph.xsd">
+<filename>example5</filename>
+  <title>example 5</title>
+  <axe>
+    <name>X</name>
+    <label>Bulk depth [#mum]</label>
+    <min>1</min>
+    <max>7</max>
+  </axe>
+  <axe>
+    <name>Y</name>
+    <label>Electric Field [V/cm]</label>
+    <min>1</min>
+    <max>29</max>
+  </axe>
+  <curve>
+    <data>gr3.txt</data>
+    <label>100 V</label>
+    <marker>
+      <style>20</style>
+    </marker>
+    <line>
+      <size>0.0</size>
+    </line>
+  </curve>
+  <curve>
+    <data>gr4.txt</data>
+    <label>300 V</label>
+    <marker>
+      <color>1</color>
+      <size>0.0</size>
+      <style>0</style>
+    </marker>
+    <line>
+      <style>1</style>
+      <color>1</color>
+      <size>1</size>
+    </line>
+  </curve>
+</plot>
