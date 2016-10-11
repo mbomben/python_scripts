@@ -6,7 +6,7 @@ from array import array
 import xml.etree.ElementTree as ET
 
 
-def etreeminiparser(filename,show=False): 
+def mp(filename,show=False): 
   #filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
@@ -105,7 +105,7 @@ def etreeminiparser(filename,show=False):
   c1.cd()
   gPad.Range(minX,maxX,minY,maxY)
   gPad.Draw()
-  mgr.Draw('ALP')
+  mgr.Draw('ACP')
   mgr.GetXaxis().SetRangeUser(minX,maxX)
   mgr.GetXaxis().SetTitle(Xaxe.get_label())
   mgr.GetYaxis().SetRangeUser(minY,maxY)
@@ -117,6 +117,8 @@ def etreeminiparser(filename,show=False):
   gPad.SetLogy(Yaxe.get_log())
   gPad.Modified()
   gPad.Update()
+  mgr.GetXaxis().SetRangeUser(minX,maxX)
+  mgr.GetYaxis().SetRangeUser(minY,maxY)
 
   c1.SetGrid(1,1)
   c1.SetTicks(1)
@@ -143,4 +145,4 @@ if (__name__ == "__main__"):
   if (len(sys.argv) == 3 ):
     show = True
   name = sys.argv[1]
-  c = etreeminiparser(name,show)
+  c = mp(name,show)
