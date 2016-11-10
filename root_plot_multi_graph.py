@@ -105,7 +105,7 @@ def mp(filename,show=False):
   c1.cd()
   gPad.Range(minX,maxX,minY,maxY)
   gPad.Draw()
-  mgr.Draw('ACP')
+  mgr.Draw('ALP')
   mgr.GetXaxis().SetRangeUser(minX,maxX)
   mgr.GetXaxis().SetTitle(Xaxe.get_label())
   mgr.GetYaxis().SetRangeUser(minY,maxY)
