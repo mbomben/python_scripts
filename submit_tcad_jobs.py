@@ -25,10 +25,8 @@ def submit_tcad_jobs( cmd, priority=0 ):
   min_n_of_valid_conditions_met = 2
   # timeout time for checking processes (in seconds)
   check_timeout_time = 5*60 # 5 minutes
-  check_timeout_time = 5 # 5 minutes
   # timeout time for verification of checking processes (in seconds)
   verification_timeout_time = 1*60 # 1 minute
-  verification_timeout_time = 1 # 1 minute
   # number of running processes 
   n_processes = 1 # starting value to have while condition starting
 
