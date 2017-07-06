@@ -27,12 +27,14 @@ def generate_xml(name,n):
       <label>                 </label>
       <min> </min>
       <max>   </max>
+      <log>0</log>
     </axe>
     <axe>
       <name>Y</name>
       <label>                               </label>
       <min>     </min>
       <max>      </max>
+      <log>0</log>
     </axe>"""
   curve = """
     <curve>
