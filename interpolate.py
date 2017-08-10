@@ -1,7 +1,5 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from scipy import interpolate
-from numpy import linspace,exp,asarray
+from numpy import asarray
 from mini_interpolate import mini_interpolate
 
 import sys
@@ -20,7 +18,7 @@ def interpolate(original_file,points_file,result_file):
     tmp = original_line.split()
     t = float(tmp[0])
     I = float(tmp[1])
-    print t,I
+    #print t,I
     all_time.append(t)
     all_current.append(I)
 
@@ -64,3 +62,4 @@ if __name__ == "__main__":
   points_filename  = sys.argv[2]
   new_filename = sys.argv[3]
   interpolate(original_filename,points_filename,new_filename)
+  print "interpolated file is:", new_filename
