@@ -20,7 +20,7 @@ def interpolate(original_file,points_file,result_file):
     tmp = original_line.split()
     t = float(tmp[0])
     I = float(tmp[1])
-    #print t,I
+    print t,I
     all_time.append(t)
     all_current.append(I)
 
@@ -28,7 +28,7 @@ def interpolate(original_file,points_file,result_file):
   for points_line in points_lines:
     tmp = points_line.split()
     t = float(tmp[0])
-    #print t
+    print t
     new_points.append(t)
 
   #print new_points
@@ -44,7 +44,7 @@ def interpolate(original_file,points_file,result_file):
     for new_point in new_points:
       new_current = mini_interpolate(original_file,new_point)
       new_currents.append(new_current)
-      ofile.write('%f %f\n' % (new_point,new_current))
+      ofile.write('%e %e\n' % (new_point,new_current))
   
     
   #splrepint = interpolate.splrep(sall_time, sall_current)
