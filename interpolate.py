@@ -44,7 +44,7 @@ def interpolate(original_file,points_file,result_file):
     for new_point in new_points:
       new_current = mini_interpolate(original_file,new_point)
       new_currents.append(new_current)
-      ofile.write('%f %f\n' % (new_point,new_current))
+      ofile.write('%e %e\n' % (new_point,new_current))
   
     
   #splrepint = interpolate.splrep(sall_time, sall_current)
