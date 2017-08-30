@@ -38,7 +38,7 @@ def generate_xml(name,n):
     </axe>"""
   curve = """
     <curve>
-    <data>                                                                              </data>
+    <data>                    </data>
     <label>                   </label>
     <marker>
       <style>  </style>
