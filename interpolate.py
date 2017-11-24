@@ -26,7 +26,7 @@ def interpolate(original_file,points_file,result_file):
   for points_line in points_lines:
     tmp = points_line.split()
     t = float(tmp[0])
-    print t
+    #print t
     new_points.append(t)
 
   #print new_points
