@@ -24,7 +24,7 @@ def divide(filename,scale_factor):
     Y = float(tmp[1])
     if (Y == 0):
       continue
-    newY = scale_factor/Y
+    newY = Y/scale_factor
     output_file.write('%f %e\n' % (X,newY))
 
 if __name__ == "__main__":
