@@ -1,15 +1,15 @@
 import sys
-import atlas_root_multi_graph
-from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F, TString
+import root_multi_graph
+from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F, TString, TGraphErrors
 from array import array
 import xml.etree.ElementTree as ET
-import AtlasUtils
+
 
 def mp(filename,show=False): 
   #filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
-  plot = atlas_root_multi_graph.plot()
+  plot = root_multi_graph.plot()
   plot.build(root)
   #print "plot.get_filename()",plot.get_filename()
   #print "plot.get_title()",plot.get_title()
@@ -48,18 +48,18 @@ def mp(filename,show=False):
   curves = plot.get_curve()
   for curve in curves:
     file=curve.get_data()
-    input_file = open(file,'r')
-    lines = input_file.readlines()
-    Y = []
-    X = []
-    for line in lines:
-      tmp = line.split()
-      X.append(float(tmp[0]))
-      Y.append(float(tmp[1]))
-    input_file.close()
-    X=array('d',X)
-    Y=array('d',Y)
-    gr = TGraph(len(X),X,Y)
+    #input_file = open(file,'r')
+    #lines = input_file.readlines()
+    #Y = []
+    #X = []
+    #for line in lines:
+    #  tmp = line.split()
+    #  X.append(float(tmp[0]))
+    #  Y.append(float(tmp[1]))
+    #input_file.close()
+    #X=array('d',X)
+    #Y=array('d',Y)
+    gr = TGraphErrors(file)
     gr.SetTitle(curve.get_label())
     try:
       gr.SetMarkerStyle(curve.get_marker().get_style())
@@ -119,35 +119,6 @@ def mp(filename,show=False):
   gPad.Update()
   mgr.GetXaxis().SetRangeUser(minX,maxX)
   mgr.GetYaxis().SetRangeUser(minY,maxY)
-
-  try:
-    atlaslabel = plot.get_atlasl()
-  except:
-    pass 
-  try:
-    xatlaslabel = atlaslabel.get_x()
-  except:
-    pass
-  try:
-    yatlaslabel = atlaslabel.get_y()
-  except:
-    pass
-  try:
-    coloratlaslabel = atlaslabel.get_color()
-  except:
-    pass
-  try:
-    AtlasUtils.ATLAS_LABEL(xatlaslabel,yatlaslabel)
-  except:
-    pass
-  
-  try:
-    mytext = plot.get_mytext()
-    for mt in mytext:
-      AtlasUtils.myText(mt.get_x(),mt.get_y(),mt.get_color(),mt.get_label())
-  except:
-    pass
-
 
   #c1.SetGrid(1,1)
   c1.SetTicks(1)
