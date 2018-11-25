@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plot 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="root_multi_graph.xsd">
+<filename>SpaceCharge_150V</filename>
+<title>Space Charge Density - V_{bias} = 150 V</title>
+  <legend>
+    <x1>0.2</x1>
+    <y1>0.7</y1>
+    <x2>0.4</x2>
+    <y2>0.89</y2>
+  </legend>
+  <axe>
+    <name>X</name>
+    <label>Bulk depth [#mum]</label>
+    <min>0</min>
+    <max>200</max>
+  </axe>
+  <axe>
+    <name>Y</name>
+    <label>Space Charge Density [e/cm^{3}]</label>
+    <min>-4e13</min>
+    <max>2.5e13</max>
+  </axe>
+  <curve>
+    <data>fei4-200um-fl1e14/reference/interpolated_Charge-150V_pruned_scaled_6.2e+18.dat</data>
+    <label>#Phi=1#times10^{14}</label>
+    <marker>
+      <style>28</style>
+      <color>7</color>
+    </marker>
+    <line>
+      <size>1.0</size>
+      <color>7</color>
+    </line>
+  </curve>
+  <curve>
+    <data>fei4-200um-fl2e14/reference/interpolated_Charge-150V_pruned_scaled_6.2e+18.dat</data>
+    <label>#Phi=2#times10^{14}</label>
+    <marker>
+      <style>29</style>
+      <color>8</color>
+    </marker>
+    <line>
+      <size>1.0</size>
+      <color>8</color>
+    </line>
+  </curve>
+  <curve>
+    <data>fei4-200um-fl4e14/reference/interpolated_Charge-150V_pruned_scaled_6.2e+18.dat</data>
+    <label>#Phi=4#times10^{14}</label>
+    <marker>
+      <style>24</style>
+    </marker>
+    <line>
+      <size>1.0</size>
+    </line>
+  </curve>
+  <curve>
+    <data>fei4-200um-fl5e14/reference/interpolated_Charge-150V_pruned_scaled_6.2e+18.dat</data>
+    <label>#Phi=5#times10^{14}</label>
+    <marker>
+      <color>2</color>
+      <style>25</style>
+    </marker>
+    <line>
+      <style>1</style>
+      <color>2</color>
+      <size>1</size>
+    </line>
+  </curve>
+  <curve>
+    <data>fei4-200um-fl6e14/reference/interpolated_Charge-150V_pruned_scaled_6.2e+18.dat</data>
+    <label>#Phi=6#times10^{14}</label>
+    <marker>
+      <color>4</color>
+      <style>26</style>
+    </marker>
+    <line>
+      <style>1</style>
+      <color>4</color>
+      <size>1</size>
+    </line>
+  </curve>
+  <curve>
+    <data>fei4-200um-fl8e14/reference/interpolated_Charge-150V_pruned_scaled_6.2e+18.dat</data>
+    <label>#Phi=8#times10^{14}</label>
+    <marker>
+      <color>6</color>
+      <style>27</style>
+    </marker>
+    <line>
+      <style>1</style>
+      <color>6</color>
+      <size>1</size>
+    </line>
+  </curve>
+</plot>

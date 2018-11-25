@@ -3,42 +3,47 @@
 <plot 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:noNamespaceSchemaLocation="root_multi_graph.xsd">
-<filename>example3</filename>
-  <title>The title of Multi Graph</title>
+<filename>example4</filename>
+  <title>example4</title>
   <axe>
     <name>X</name>
     <label>Bulk depth [#mum]</label>
-    <min>0</min>
+    <min>1</min>
     <max>7</max>
   </axe>
   <axe>
     <name>Y</name>
     <label>Electric Field [V/cm]</label>
-    <min>0</min>
-    <max>9</max>
+    <min>1</min>
+    <max>29</max>
+    <log>1</log>
   </axe>
   <curve>
-    <data>gr1.txt</data>
+    <data>gr3.txt</data>
     <label>100 V</label>
     <marker>
       <style>20</style>
-      <color>800</color>
-      <size>3.0</size>
+      <color>1</color>
+      <size>2.0</size>
     </marker>
     <line>
+      <style>2</style>
       <color>3</color>
-      <size>4</size>
+      <size>1</size>
     </line>
   </curve>
   <curve>
-    <data>gr2.txt</data>
+    <data>gr4.txt</data>
     <label>300 V</label>
     <marker>
+      <color>2</color>
+      <size>1.0</size>
       <style>21</style>
     </marker>
     <line>
-      <style>5</style>
-      <color>6</color>
+      <style>1</style>
+      <color>1</color>
+      <size>1</size>
     </line>
   </curve>
 </plot>
