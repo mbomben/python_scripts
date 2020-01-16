@@ -34,9 +34,9 @@ def mini_interpolate(original_file,point):
   
 if __name__ == "__main__":
   if (len(sys.argv)!=3):
-    print "Usage:",sys.argv[0],"<original file> <new point file>"
+    print("Usage: %s <original file> <new point file>\n" %(sys.argv[0]))
     exit(2)
   original_filename = sys.argv[1]
   point  = float(sys.argv[2])
   currentnew = mini_interpolate(original_filename,point)
-  print currentnew
+  print (currentnew)
