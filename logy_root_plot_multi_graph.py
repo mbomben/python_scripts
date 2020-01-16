@@ -1,6 +1,6 @@
 import sys
 import root_multi_graph
-from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F
+from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F, TString
 from array import array
 
 import xml.etree.ElementTree as ET
@@ -30,7 +30,8 @@ def etreeminiparser(filename,show=False):
   maxY = 0
 
 # here starts the ROOT part
-  mgr = TMultiGraph('mgr','')
+  tstring_title = TString(title)
+  mgr = TMultiGraph('mgr',tstring_title.Data())
   leg = TLegend(.6,.75,.89,.89)
   curves = plot.get_curve()
   for curve in curves:

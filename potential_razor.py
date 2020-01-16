@@ -1,11 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import griddata
+from matplotlib.colors import LogNorm
 
 X = []
 Y = []
 V = []
-for line in open('potential.dat'):
+#for line in open('potential.dat'):
+#for line in open('hConc.dat'):
+for line in open('hConc_100ps.dat'):
   tmp = line.split()
   x = float(tmp[0])
   y = float(tmp[1])
@@ -14,7 +17,7 @@ for line in open('potential.dat'):
   Y.append(y)
   V.append(v)
 
-npr = np.random
+npr = np.random              # Tue Apr 12 08:43:15 CEST 2016 consider to remove
 npts = len(X)                           # the total number of data points.
 X = np.asarray(X)            # x data in array format
 Y = np.asarray(Y)            # y data in array format
@@ -65,15 +68,20 @@ palette.set_under(alpha=0.0)
 # plot the results.  first plot is x, y vs v, where v is a filled level plot.
 extent = (X.min(), X.max(), Y.min(), Y.max()) # extent of the plot
 #plt.subplot(1, 2, 1)
-plt.imshow(grid, extent=extent, cmap=palette, origin='lower', vmin=vmin, vmax=vmax, aspect='auto', interpolation='bicubic')
+plt.imshow(grid, extent=extent, cmap=palette, origin='lower', vmin=vmin, vmax=vmax, aspect='auto', interpolation='bicubic', norm=LogNorm())
 plt.xlabel(r'$X\, [\mu m]$')
 plt.ylabel(r'$Y\, [\mu m]$')
-plt.title('Potential map')
+#plt.title('Potential map')
+plt.title('Hole concentration map')
 cbar = plt.colorbar()
-cbar.set_label(r'$V_{bias}\, [V]$')
+#cbar.set_label(r'$V_{bias}\, [V]$')
+cbar.set_label(r'$Hole\,conc.\, [cm^{-3}]$')
 plt.gca().invert_yaxis()
-plt.clim(-500,0)
-plt.savefig('razor.png')
+#plt.clim(-500,0)
+plt.clim(1e1,1e20)
+#plt.zscale('log')
+#plt.savefig('razor.png')
+plt.savefig('holeConc_100ps.png')
 
 # now show the number of points in each bin.  since the independent data are
 # Gaussian distributed, we expect a 2D Gaussian.

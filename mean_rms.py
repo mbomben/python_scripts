@@ -16,7 +16,7 @@ def RMS(nums):
 if (__name__ == "__main__"):
   show = False
   if (len(sys.argv) < 2 or len(sys.argv) > 2 ):
-    print "Usage:",sys.argv[0],"numbers\n";
+    print("Usage: %s numbers\n" % (sys.argv[0]))
     exit(2)
   alist = []
   alist = sys.argv[1]

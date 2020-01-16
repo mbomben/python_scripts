@@ -6,7 +6,7 @@ from numpy import linspace,exp,asarray
 import sys
 
 
-def integrateCurr(file_name,t0):
+def derivCurr(file_name,t0):
   
   input_file = open(file_name,'r')
   t0 = float(t0)
@@ -16,40 +16,33 @@ def integrateCurr(file_name,t0):
   Q = 0.0
   input_lines = input_file.readlines()
   input_file.close()
-  Ileak = 0
   for input_line in input_lines:
     index += 1
+    if ( index < 4 ):
+      continue
     tmp = input_line.split()
     t = float(tmp[0])
     I = float(tmp[1])
-    if ( index == 0 ):
-      Ileak = I
-    if ( t>t0 ):
-      all_time.append(t)
-      all_current.append(I)
+    all_time.append(t)
+    all_current.append(I)
   
   
   sall_time = asarray(all_time)
   sall_current = asarray(all_current)
-  
+  array_t0 = asarray([t0]) 
   
   
   
   
   splrepint = interpolate.splrep(sall_time, sall_current, s=0)
-  currentnew = interpolate.splev(sall_time, splrepint, der=0)
-  initial_time = [t0/2.0]
-  sinitial_time = asarray(initial_time)
+  derivative_at_t0 = interpolate.splev(array_t0,splrepint, 1)
   
   
   charge = interpolate.splint(sall_time[0], sall_time[len(all_time)-1], splrepint)
   dt = sall_time[len(sall_time)-1]-sall_time[0]
-  #Ileak = sall_current[len(sall_time)-1]
-  currentnew = interpolate.splev(sinitial_time, splrepint, der=0)
-  #print "Ileak =", Ileak
-  #print "currentnew =", currentnew
+  Ileak = sall_current[len(sall_time)-1]
   charge -= Ileak*dt
-  return charge
+  return derivative_at_t0
   
 if __name__ == "__main__":
   if (len(sys.argv)!=3):
@@ -57,5 +50,5 @@ if __name__ == "__main__":
     exit(2)
   filename = sys.argv[1]
   t0 = sys.argv[2]
-  q = integrateCurr(filename,t0)
+  q = derivCurr(filename,t0)
   print q

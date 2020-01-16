@@ -4,8 +4,8 @@ import sys
 def generate_xml(name,n):
   name = str(name)
   n = int(n)
-  print "name = ",name
-  print "n = ", n
+  print("name = %s" %(name))
+  print("n = %d" %(n))
 
   header = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 
@@ -83,11 +83,11 @@ def generate_xml(name,n):
 if (__name__ == "__main__"):
   show = False
   if (len(sys.argv) != 3 ):
-    print "Usage:",sys.argv[0],"<filename.xml> <number of curves>";
+    print("Usage: %s <filename.xml> <number of curves>" % (sys.argv[0]));
     exit(2)
   name = sys.argv[1]
   n = int(sys.argv[2])
   if ( n > 15 ):
-    print "Too many curves, not enough markers"
+    print("Too many curves, not enough markers")
     exit( 2 )
   generate_xml(name,n)

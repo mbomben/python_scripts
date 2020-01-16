@@ -82,10 +82,11 @@ def etreeminiparser(filename):
   #plt.subplot(1, 2, 1)
   log = Zaxe.get_log()
   if ( log ):
-    plt.imshow(grid, extent=extent, cmap=palette, origin='lower', vmin=vmin, vmax=vmax, aspect='auto', interpolation='bicubic', norm=LogNorm())
+    #plt.imshow(grid, extent=extent, cmap=palette, origin='lower', vmin=vmin, vmax=vmax, aspect='auto', interpolation='bicubic', norm=LogNorm())
+    plt.imshow(grid, extent=extent, cmap='jet', origin='lower', vmin=vmin, vmax=vmax, aspect='auto', interpolation='bicubic', norm=LogNorm())
   else:
     plt.imshow(grid, extent=extent, cmap=palette, origin='lower', vmin=vmin, vmax=vmax, aspect='auto', interpolation='bicubic')
-  
+
   xtitle = Xaxe.get_label()
   plt.xlabel(xtitle)
   ytitle = Yaxe.get_label()
@@ -106,7 +107,22 @@ def etreeminiparser(filename):
   save_pic = saveFile + '.pdf'
   print "Results will be saved in:\n\t",save_pic
   plt.savefig(save_pic)
-  
+  (nx,ny) = grid.shape
+  Xmin, Xmax = X.min(), X.max()
+  Ymin, Ymax = Y.min(), Y.max()
+  xi      = np.arange(Xmin, Xmax+binsize, binsize)
+  yi      = np.arange(Ymin, Ymax+binsize, binsize)
+  xi, yi  = np.meshgrid(xi,yi)
+  print xi
+  #print yi
+  #print grid
+  print nx, ny
+  print type(xi)
+  savefile = saveFile + '.txt'
+  output_file = open(savefile,'w')
+  for ix in range(nx):
+    for iy in range(ny):
+      output_file.write('%e %e %e\n' % (xi[ix][iy], yi[ix][iy], grid[ix][iy]))
 
 if (__name__ == "__main__"):
   if ( len(sys.argv) != 2 ):

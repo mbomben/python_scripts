@@ -1,7 +1,8 @@
 import sys
 import os
+from math import sqrt as sqrt
 
-def scale(filename,scale_factor):
+def CV(filename):
 
 
   input_file = open(filename,'r')
@@ -10,7 +11,7 @@ def scale(filename,scale_factor):
 
   basename=os.path.splitext(filename)[0]
   ext = os.path.splitext(filename)[1]
-  savefile = "%s_scaled_%2.1e%s" % (basename,scale_factor,ext)
+  savefile = "%s_CV%s" % (basename,ext)
   print "savefile is",savefile
 
   output_file = open(savefile,'w')
@@ -22,13 +23,12 @@ def scale(filename,scale_factor):
     tmp = line.split()
     X = float(tmp[0])
     Y = float(tmp[1])
-    newY = Y*scale_factor
-    output_file.write('%e %e\n' % (X,newY))
+    newY = 1.0/sqrt(Y)
+    output_file.write('%f %e\n' % (X,newY))
 
 if __name__ == "__main__":
-  if (len(sys.argv)!=3):
-    print "Usage:",sys.argv[0],"<filename> <scale_factor>"
+  if (len(sys.argv)!=2):
+    print "Usage:",sys.argv[0],"<filename>"
     exit(2)
   filename = sys.argv[1]
-  scale_factor = float(sys.argv[2])
-  scale(filename,scale_factor)
+  CV(filename)

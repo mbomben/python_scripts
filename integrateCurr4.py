@@ -23,6 +23,7 @@ def integrateCurr4(file_name,t0,t1,iS):
     tmp = input_line.split()
     t = float(tmp[0])
     I = float(tmp[1])
+    #print t,I
     if ( index == 0 ):
       Ileak = I
     if ( t>t0 ):

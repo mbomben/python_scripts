@@ -1,15 +1,15 @@
 import sys
-import root_multi_graph
+import atlas_root_multi_graph
 from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F, TString
 from array import array
 import xml.etree.ElementTree as ET
+import AtlasUtils
 
-
-def mp(filename,show=False): 
+def lmp(filename,show=False): 
   #filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
-  plot = root_multi_graph.plot()
+  plot = atlas_root_multi_graph.plot()
   plot.build(root)
   #print "plot.get_filename()",plot.get_filename()
   #print "plot.get_title()",plot.get_title()
@@ -18,7 +18,7 @@ def mp(filename,show=False):
   saveFile = plot.get_filename()
   axes = plot.get_axe()
   if (len(axes) != 2):
-    print "\nThere must be 2 and only 2 axes, named X and Y.\nExiting...\n"
+    print("\nThere must be 2 and only 2 axes, named X and Y.\nExiting...\n")
     exit(len(axes))
   for axe in axes:
     #print "axe.get_name()",axe.get_name()
@@ -84,10 +84,10 @@ def mp(filename,show=False):
     try:
       gr.SetLineWidth(int(curve.get_line().get_size()))
     except TypeError:
-      gr.SetLineWidth(defaultLineSize)
+      gr.SetLineWidth(int(defaultLineSize))
     gr.SetLineColor(curve.get_line().get_color())
-    mgr.Add(gr)
-    leg.AddEntry(gr,gr.GetTitle(),'lp')
+    mgr.Add(gr,"l")
+    leg.AddEntry(gr,gr.GetTitle(),"l")
 
 
 # real design part
@@ -96,15 +96,15 @@ def mp(filename,show=False):
 
   minX = Xaxe.get_min()
   maxX = Xaxe.get_max()
-  print 'X range',minX,maxX
+  print ('X range %f %f' % (minX,maxX))
   minY = Yaxe.get_min()
   maxY = Yaxe.get_max()
-  print 'Y range',minY,maxY
+  print ('Y range %f %f' % (minY,maxY))
   c1 = TCanvas('c1',title)
   c1.cd()
   gPad.Range(minX,maxX,minY,maxY)
   gPad.Draw()
-  mgr.Draw('ALP')
+  mgr.Draw("AL")
   mgr.GetXaxis().SetRangeUser(minX,maxX)
   mgr.GetXaxis().SetTitle(Xaxe.get_label())
   mgr.GetYaxis().SetRangeUser(minY,maxY)
@@ -120,20 +120,51 @@ def mp(filename,show=False):
   mgr.GetXaxis().SetRangeUser(minX,maxX)
   mgr.GetYaxis().SetRangeUser(minY,maxY)
 
+  try:
+    atlaslabel = plot.get_atlasl()
+  except:
+    pass 
+  try:
+    xatlaslabel = atlaslabel.get_x()
+  except:
+    pass
+  try:
+    yatlaslabel = atlaslabel.get_y()
+  except:
+    pass
+  try:
+    coloratlaslabel = atlaslabel.get_color()
+  except:
+    pass
+  try:
+    AtlasUtils.ATLAS_LABEL(xatlaslabel,yatlaslabel)
+  except:
+    pass
+  
+  try:
+    mytext = plot.get_mytext()
+    for mt in mytext:
+      AtlasUtils.myText(mt.get_x(),mt.get_y(),mt.get_color(),mt.get_label())
+  except:
+    pass
+
+
   #c1.SetGrid(1,1)
   c1.SetTicks(1)
   leg.SetBorderSize(0)
   leg.SetTextSize(0.04)
+  leg.SetFillStyle(0)
+  leg.SetFillColor(0)
   leg.Draw()
   #leg.SetFillColor(10)
   save_pic = saveFile + '.png'
-  print "Results will be saved in:\n\t",save_pic
+  print("Results will be saved in: %s\n\t" %(save_pic))
   c1.SaveAs(save_pic)
   save_pic = saveFile + '.pdf'
-  print "Results will be saved in:\n\t",save_pic,
+  print("Results will be saved in: %s\n\t" %(save_pic))
   c1.SaveAs(save_pic)
   save_pic = saveFile + '.C'
-  print "Results will be saved in:\n\t",save_pic,
+  print("Results will be saved in: %s\n\t" %(save_pic))
   c1.SaveAs(save_pic)
   mgr.DrawClone()
   leg.DrawClone()
@@ -142,9 +173,9 @@ def mp(filename,show=False):
 if (__name__ == "__main__"):
   show = False
   if (len(sys.argv) < 2 or len(sys.argv) > 3 ):
-    print "Usage:",sys.argv[0],"<filename.xml> [show]\n";
+    print("Usage: %s <filename.xml> [show]\n" % (sys.argv[0]))
     exit(2)
   if (len(sys.argv) == 3 ):
     show = True
   name = sys.argv[1]
-  c = mp(name,show)
+  c = lmp(name,show)

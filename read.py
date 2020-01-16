@@ -16,7 +16,7 @@ def read(filename):
 
 if (__name__ == "__main__"):
   if (len(sys.argv) != 2 ):
-    print "Usage:",sys.argv[0],"<filename>\n";
+    print("Usage: %s <filename>\n" % (sys.argv[0]))
     exit(2)
   filename = sys.argv[1]
   X=[]

@@ -18,7 +18,7 @@ def mp(filename,show=False):
   saveFile = plot.get_filename()
   axes = plot.get_axe()
   if (len(axes) != 2):
-    print "\nThere must be 2 and only 2 axes, named X and Y.\nExiting...\n"
+    print("\nThere must be 2 and only 2 axes, named X and Y.\nExiting...\n")
     exit(len(axes))
   for axe in axes:
     #print "axe.get_name()",axe.get_name()
@@ -96,10 +96,10 @@ def mp(filename,show=False):
 
   minX = Xaxe.get_min()
   maxX = Xaxe.get_max()
-  print 'X range',minX,maxX
+  print('X range',minX,maxX)
   minY = Yaxe.get_min()
   maxY = Yaxe.get_max()
-  print 'Y range',minY,maxY
+  print('Y range',minY,maxY)
   c1 = TCanvas('c1',title)
   c1.cd()
   gPad.Range(minX,maxX,minY,maxY)
@@ -127,13 +127,13 @@ def mp(filename,show=False):
   leg.Draw()
   #leg.SetFillColor(10)
   save_pic = saveFile + '.png'
-  print "Results will be saved in:\n\t",save_pic
+  print("Results will be saved in:\n\t",save_pic)
   c1.SaveAs(save_pic)
   save_pic = saveFile + '.pdf'
-  print "Results will be saved in:\n\t",save_pic,
+  print("Results will be saved in:\n\t",save_pic)
   c1.SaveAs(save_pic)
   save_pic = saveFile + '.C'
-  print "Results will be saved in:\n\t",save_pic,
+  print("Results will be saved in:\n\t",save_pic)
   c1.SaveAs(save_pic)
   mgr.DrawClone()
   leg.DrawClone()
@@ -142,7 +142,7 @@ def mp(filename,show=False):
 if (__name__ == "__main__"):
   show = False
   if (len(sys.argv) < 2 or len(sys.argv) > 3 ):
-    print "Usage:",sys.argv[0],"<filename.xml> [show]\n";
+    print("Usage:",sys.argv[0],"<filename.xml> [show]\n");
     exit(2)
   if (len(sys.argv) == 3 ):
     show = True

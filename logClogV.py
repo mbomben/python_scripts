@@ -1,7 +1,8 @@
 import sys
 import os
+from math import log as log
 
-def scale(filename,scale_factor):
+def logClogV(filename):
 
 
   input_file = open(filename,'r')
@@ -10,7 +11,7 @@ def scale(filename,scale_factor):
 
   basename=os.path.splitext(filename)[0]
   ext = os.path.splitext(filename)[1]
-  savefile = "%s_scaled_%2.1e%s" % (basename,scale_factor,ext)
+  savefile = "%s_logClogV%s" % (basename,ext)
   print "savefile is",savefile
 
   output_file = open(savefile,'w')
@@ -20,15 +21,15 @@ def scale(filename,scale_factor):
 
   for line in input_lines:
     tmp = line.split()
-    X = float(tmp[0])
-    Y = float(tmp[1])
-    newY = Y*scale_factor
-    output_file.write('%e %e\n' % (X,newY))
+    X = abs(float(tmp[0]))
+    Y = abs(float(tmp[1]))
+    newX = log(X,10)
+    newY = log(Y,10)
+    output_file.write('%f %e\n' % (newX,newY))
 
 if __name__ == "__main__":
-  if (len(sys.argv)!=3):
-    print "Usage:",sys.argv[0],"<filename> <scale_factor>"
+  if (len(sys.argv)!=2):
+    print "Usage:",sys.argv[0],"<filename>"
     exit(2)
   filename = sys.argv[1]
-  scale_factor = float(sys.argv[2])
-  scale(filename,scale_factor)
+  logClogV(filename)
