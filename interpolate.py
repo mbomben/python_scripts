@@ -56,10 +56,10 @@ def interpolate(original_file,points_file,result_file):
   
 if __name__ == "__main__":
   if (len(sys.argv)!=4):
-    print "Usage:",sys.argv[0],"<original file> <points file> <new results file>"
+    print("Usage: %s ""<original file> <points file> <new results file>\n" % (sys.argv[0]))
     exit(2)
   original_filename = sys.argv[1]
   points_filename  = sys.argv[2]
   new_filename = sys.argv[3]
   interpolate(original_filename,points_filename,new_filename)
-  print "interpolated file is:", new_filename
+  print("interpolated file is: %s\n" % (new_filename))
