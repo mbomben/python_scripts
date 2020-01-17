@@ -38,7 +38,7 @@ def interpolate(original_file,points_file,result_file):
   sall_current = asarray(all_current)
   #print sall_current[3]
   new_currents = []
-  with open(result_file,'wb') as ofile:
+  with open(result_file,'w') as ofile:
     for new_point in new_points:
       new_current = mini_interpolate(original_file,new_point)
       new_currents.append(new_current)
