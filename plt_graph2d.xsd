@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- definition of simple elements -->
+<xs:element name="title" type="xs:string"/>
+<xs:element name="name" type="xs:string"/>
+<xs:element name="data" type="xs:string"/>
+<xs:element name="filename" type="xs:string"/>
+<xs:element name="min" type="xs:double"/>
+<xs:element name="max" type="xs:double"/>
+<xs:element name="label" type="xs:string"/>
+<xs:element name="marker" type="xs:string"/>
+<xs:element name="color" type="xs:string"/>
+<xs:element name="log" type="xs:boolean"/>
+<xs:element name="binsize" type="xs:double"/>
+
+<!-- definition of attributes -->
+<xs:attribute name="orderid" type="xs:string"/>
+
+<!-- definition of complex elements -->
+
+<xs:element name="axe">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="name"/>
+      <xs:element ref="label"/>
+      <xs:element ref="min"/>
+      <xs:element ref="max"/>
+      <xs:element ref="log"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="graph">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="data"/>
+      <xs:element ref="binsize"/>
+    </xs:sequence>
+  </xs:complexType></xs:element>
+
+<!-- definition of the root element -->
+<xs:element name="plot">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="filename"/>
+      <xs:element ref="title"/>
+      <xs:element ref="axe" minOccurs="3" maxOccurs="3"/>
+      <xs:element ref="graph" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>
