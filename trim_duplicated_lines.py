@@ -19,7 +19,9 @@ def trim_duplicated_lines(filename,verbose=0):
 
   for n_line in range(n_lines):
     if ( not ( (n_line+1) in list_of_duplicated_lines ) ):
-      print(f_lines[n_line])
+      new_f.write(f_lines[n_line])
+      if ( verbose ):
+        sys.stdout.write(f_lines[n_line])
 
 if ( __name__ == "__main__" ):
   if (len(sys.argv) < 2 or len(sys.argv) > 3):
