@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy import interpolate
 from numpy import linspace,exp,asarray
 
@@ -59,7 +58,7 @@ def integrateCurr5(file_name,t0,t1,leakageCurr):
   
 if __name__ == "__main__":
   if (len(sys.argv)!=3 and len(sys.argv)!=4 and len(sys.argv)!=5):
-    print "Usage:",sys.argv[0],"<filename> <t0> [<t1>] [leakage current (A)]"
+    print("Usage:" + sys.argv[0] + "<filename> <t0> [<t1>] [leakage current (A)]")
     exit(2)
   if (len(sys.argv)==5):
     filename = sys.argv[1]
@@ -77,4 +76,4 @@ if __name__ == "__main__":
     t1 = -1
     leakageCurr = 0
   q = integrateCurr5(filename,t0,t1,leakageCurr)
-  print q
+  print (q)

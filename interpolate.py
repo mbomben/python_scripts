@@ -7,9 +7,9 @@ import sys
 
 def interpolate(original_file,points_file,result_file):
   
-  with open(original_file,'rb') as original:
+  with open(original_file,'r') as original:
     original_lines=original.readlines()
-  with open(points_file,'rb') as points:
+  with open(points_file,'r') as points:
     points_lines=points.readlines()
   #with open(result_file,'wb') as result:
   all_time = []

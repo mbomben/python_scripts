@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plot 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="root_multi_graph.xsd">
+<filename>example_potential</filename>
+  <title>Electric Field</title>
+  <axe>
+    <name>X</name>
+    <label>$X\, [\mu m]$</label>
+    <min>0</min>
+    <max>200</max>
+    <log>0</log>
+  </axe>
+  <axe>
+    <name>Y</name>
+    <label>$Y\, [\mu m]$</label>
+    <min>0</min>
+    <max>140</max>
+    <log>0</log>
+  </axe>
+  <axe>
+    <name>Z</name>
+    <label>Electric Field [V/cm]</label>
+    <min>0</min>
+    <max>20000</max>
+    <log>0</log>
+  </axe>
+  <graph>
+    <data>structure_10um_EField.dat</data>
+    <binsize>5</binsize>
+  </graph>
+</plot>
