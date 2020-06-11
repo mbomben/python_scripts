@@ -1,7 +1,8 @@
 import os
 import sys
 if (len(sys.argv) != 3):
-  print "Usage:",sys.argv[0]," <filename> <number of lines to skip>",
+  print("Usage: %s <filename> <number of lines to skip>" % (sys.argv[0]))
+  #print("Usage: %s <filename>\n" % (sys.argv[0]))
   exit(2)
 filename=sys.argv[1]
 num_of_lines_to_skip = int(sys.argv[2])
@@ -11,7 +12,7 @@ basename=os.path.splitext(filename)[0]
 ext = os.path.splitext(filename)[1]
 
 newname = basename + "_pruned" + ext
-print "The pruned file is:\n\t",newname
+print("The pruned file is:\n\t %s" %(newname))
 f = open(filename,'r')
 g = open(newname,'w')
 lines = f.readlines()
