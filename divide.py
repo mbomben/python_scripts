@@ -11,7 +11,7 @@ def divide(filename,scale_factor):
   basename=os.path.splitext(filename)[0]
   ext = os.path.splitext(filename)[1]
   savefile = "%s_divided%s" % (basename,ext)
-  print "savefile is",savefile
+  print("savefile is" + savefile)
 
   output_file = open(savefile,'w')
 
@@ -29,7 +29,7 @@ def divide(filename,scale_factor):
 
 if __name__ == "__main__":
   if (len(sys.argv)!=3):
-    print "Usage:",sys.argv[0],"<filename> <scale_factor>"
+    print("Usage: "+sys.argv[0]+" <filename> <scale_factor>")
     exit(2)
   filename = sys.argv[1]
   scale_factor = float(sys.argv[2])
