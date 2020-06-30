@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Oct 11 17:59:58 2017 by generateDS.py version 2.23a.
+# Generated Tue Jun 30 18:30:14 2020 by generateDS.py version 2.23a.
 #
 # Command line options:
 #   ('-f', '')
@@ -16,7 +16,7 @@
 #   ./generateDS.py -f -o "atlas_root_multi_graph.py" -s "sub_atlas_root_multi_graph.py" ../atlas_root_multi_graph.xsd
 #
 # Current working directory (os.getcwd()):
-#   generateDS-2.23a0
+#   generateDS-2.23a0_bis
 #
 
 import sys
@@ -393,7 +393,7 @@ except ImportError as exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -1208,6 +1208,96 @@ class legend(GeneratedsSuper):
 # end class legend
 
 
+class grid(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, x=0, y=0):
+        self.original_tagname_ = None
+        self.x = x
+        self.y = y
+    def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, grid)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
+        if grid.subclass:
+            return grid.subclass(*args_, **kwargs_)
+        else:
+            return grid(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_x(self): return self.x
+    def set_x(self, x): self.x = x
+    def get_y(self): return self.y
+    def set_y(self, y): self.y = y
+    def hasContent_(self):
+        if (
+            self.x != 0 or
+            self.y != 0
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='grid', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.original_tagname_ is not None:
+            name_ = self.original_tagname_
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='grid')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_='', name_='grid', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='grid'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='grid', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.x != 0:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sx>%s</%sx>%s' % (namespace_, self.gds_format_double(self.x, input_name='x'), namespace_, eol_))
+        if self.y != 0:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sy>%s</%sy>%s' % (namespace_, self.gds_format_double(self.y, input_name='y'), namespace_, eol_))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'x':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'x')
+            self.x = fval_
+        elif nodeName_ == 'y':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'y')
+            self.y = fval_
+# end class grid
+
+
 class atlasl(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -1432,7 +1522,7 @@ class mytext(GeneratedsSuper):
 class plot(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, filename=None, title='', axe=None, legend=None, curve=None, atlasl=None, mytext=None):
+    def __init__(self, filename=None, title='', axe=None, legend=None, grid=None, curve=None, atlasl=None, mytext=None):
         self.original_tagname_ = None
         self.filename = filename
         self.title = title
@@ -1441,6 +1531,7 @@ class plot(GeneratedsSuper):
         else:
             self.axe = axe
         self.legend = legend
+        self.grid = grid
         if curve is None:
             self.curve = []
         else:
@@ -1472,6 +1563,8 @@ class plot(GeneratedsSuper):
     def replace_axe_at(self, index, value): self.axe[index] = value
     def get_legend(self): return self.legend
     def set_legend(self, legend): self.legend = legend
+    def get_grid(self): return self.grid
+    def set_grid(self, grid): self.grid = grid
     def get_curve(self): return self.curve
     def set_curve(self, curve): self.curve = curve
     def add_curve(self, value): self.curve.append(value)
@@ -1490,6 +1583,7 @@ class plot(GeneratedsSuper):
             self.title != "" or
             self.axe or
             self.legend is not None or
+            self.grid is not None or
             self.curve or
             self.atlasl is not None or
             self.mytext
@@ -1532,6 +1626,8 @@ class plot(GeneratedsSuper):
             axe_.export(outfile, level, namespace_, name_='axe', pretty_print=pretty_print)
         if self.legend is not None:
             self.legend.export(outfile, level, namespace_, name_='legend', pretty_print=pretty_print)
+        if self.grid is not None:
+            self.grid.export(outfile, level, namespace_, name_='grid', pretty_print=pretty_print)
         for curve_ in self.curve:
             curve_.export(outfile, level, namespace_, name_='curve', pretty_print=pretty_print)
         if self.atlasl is not None:
@@ -1566,6 +1662,11 @@ class plot(GeneratedsSuper):
             obj_.build(child_)
             self.legend = obj_
             obj_.original_tagname_ = 'legend'
+        elif nodeName_ == 'grid':
+            obj_ = grid.factory()
+            obj_.build(child_)
+            self.grid = obj_
+            obj_.original_tagname_ = 'grid'
         elif nodeName_ == 'curve':
             obj_ = curve.factory()
             obj_.build(child_)
@@ -1710,6 +1811,7 @@ __all__ = [
     "atlasl",
     "axe",
     "curve",
+    "grid",
     "legend",
     "line",
     "marker",

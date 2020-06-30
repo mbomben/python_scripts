@@ -121,6 +121,12 @@ def mp(filename,show=False):
   mgr.GetYaxis().SetRangeUser(minY,maxY)
 
   #c1.SetGrid(1,1)
+  if ( plot.get_grid() ):
+    grid = plot.get_grid()
+    x = int(grid.get_x())
+    y = int(grid.get_y())
+    gPad.SetGrid(x,y)
+
   c1.SetTicks(1)
   leg.SetBorderSize(0)
   leg.SetTextSize(0.04)
