@@ -17,6 +17,8 @@
 <xs:element name="x2" type="xs:double"/>
 <xs:element name="y1" type="xs:double"/>
 <xs:element name="y2" type="xs:double"/>
+<xs:element name="x" type="xs:double"/>
+<xs:element name="y" type="xs:double"/>
 
 <!-- definition of attributes -->
 <xs:attribute name="orderid" type="xs:string"/>
@@ -80,6 +82,25 @@
     <xs:element ref="y" minOccurs="0" maxOccurs="1" default="0"/>
   </xs:complexType>
  </xs:element>
+  
+  <xs:element name="atlasl">
+  <xs:complexType>
+    <xs:element ref="x" minOccurs="0" maxOccurs="1" default="0.2"/>
+    <xs:element ref="y" minOccurs="0" maxOccurs="1" default="0.8"/>
+    <xs:element ref="color" minOccurs="0" maxOccurs="1" default="1"/>
+  </xs:complexType>
+ </xs:element>
+  
+  <xs:element name="mytext">
+  <xs:complexType>
+    <xs:element ref="x" minOccurs="0" maxOccurs="1" default="0.2"/>
+    <xs:element ref="y" minOccurs="0" maxOccurs="1" default="0.8"/>
+    <xs:element ref="color" minOccurs="0" maxOccurs="1" default="1"/>
+    <xs:element ref="label"/>
+  </xs:complexType>
+ </xs:element>
+
+
 
 <!-- definition of the root element -->
 <xs:element name="plot">
@@ -91,6 +112,8 @@
       <xs:element ref="legend" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="grid" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="curve" maxOccurs="unbounded"/>
+      <xs:element ref="atlasl" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="mytext" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:element>
