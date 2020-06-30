@@ -1,0 +1,15 @@
+Tue Jun 30 18:49:27 CEST 2020
+The original xsd files are here: 
+/Users/mbomben/work/python/xml 
+
+The python files to parse xml and make plots in root were produced here:
+~/work/python/xml/generateDS-2.23a0_bis
+on the date above.
+Used commands where:
+./generateDS.py -f -o "root_multi_graph.py" -s "sub_root_multi_graph.py" ../root_multi_graph.xsd
+and
+./generateDS.py -f -o "atlas_root_multi_graph.py" -s "sub_atlas_root_multi_graph.py" ../atlas_root_multi_graph.xsd
+
+These commands can be found as comments at the top of the files:
+root_multi_graph.py
+atlas_root_multi_graph.py
