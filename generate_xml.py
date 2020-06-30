@@ -21,6 +21,10 @@ def generate_xml(name,n):
       <x2>0.4</x2>
       <y2>0.89</y2>
     </legend>"""
+  grid = """<grid>
+     <x>0</x>
+     <y>0</y>
+     </grid>"""
   axes = """
   <axe>
       <name>X</name>
@@ -63,6 +67,8 @@ def generate_xml(name,n):
     f.write(title)
     f.write("\n")
     f.write(legend)
+    f.write("\n")
+    f.write(grid)
     f.write(axes) 
     f.write("\n")
     for i in range(n):
