@@ -102,10 +102,10 @@ def etreeminiparser(filename):
   #plt.zscale('log')
   #plt.savefig('razor.png')
   save_pic = saveFile + '.png'
-  print "Results will be saved in:\n\t",save_pic
+  print("Results will be saved in:\n\t%s" % (save_pic))
   plt.savefig(save_pic)
   save_pic = saveFile + '.pdf'
-  print "Results will be saved in:\n\t",save_pic
+  print("Results will be saved in:\n\t%s" % (save_pic))
   plt.savefig(save_pic)
   (nx,ny) = grid.shape
   Xmin, Xmax = X.min(), X.max()
@@ -113,11 +113,11 @@ def etreeminiparser(filename):
   xi      = np.arange(Xmin, Xmax+binsize, binsize)
   yi      = np.arange(Ymin, Ymax+binsize, binsize)
   xi, yi  = np.meshgrid(xi,yi)
-  print xi
+  print(xi)
   #print yi
   #print grid
-  print nx, ny
-  print type(xi)
+  print(nx, ny)
+  print(type(xi))
   savefile = saveFile + '.txt'
   output_file = open(savefile,'w')
   for ix in range(nx):
@@ -126,7 +126,7 @@ def etreeminiparser(filename):
 
 if (__name__ == "__main__"):
   if ( len(sys.argv) != 2 ):
-    print "Usage:",sys.argv[0],"<filename.xml>\n"
+    print("Usage: %s <filename.xml>\n" % (sys.argv[0]))
     exit(2)
   name = sys.argv[1]
   etreeminiparser(name)
