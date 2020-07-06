@@ -1,3 +1,4 @@
+import os
 import sys
 import root_multi_graph
 from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F, TString, TGraphErrors
@@ -6,6 +7,9 @@ import xml.etree.ElementTree as ET
 
 
 def mp(filename,show=False): 
+  if ( not os.path.isfile(filename)):
+    print("%s file does not exist. Exiting..." % (filename) )
+    exit(3)
   #filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
@@ -153,4 +157,7 @@ if (__name__ == "__main__"):
   if (len(sys.argv) == 3 ):
     show = True
   name = sys.argv[1]
+  if ( not os.path.isfile(name)):
+    print("%s file does not exist. Exiting..." % (name) )
+    exit(3)
   c = mp(name,show)
