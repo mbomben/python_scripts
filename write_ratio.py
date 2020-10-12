@@ -12,7 +12,7 @@ def write_ratio(filename1,filename2,savefile):
   input_lines2 = input_file2.readlines()
 
   if ( len(input_lines1)!=len(input_lines2) ):
-    print filename1,"and",filename2,"should have the same number of lines"
+    print("%s and %s should have the same number of lines" % (filename1,filename2))
     return -1
 
   output_file = open(savefile,'w')
@@ -32,7 +32,7 @@ def write_ratio(filename1,filename2,savefile):
     else:
       asymm = abs(tmp1_field1-tmp2_field1)/(tmp1_field1+tmp2_field1)
       if (asymm > max_diff):
-        print "lines #",(line+1),"differ more than",max_diff,":",asymm
+        print("lines #%d differ more than %e: %e"  %((line+1),max_diff,asymm))
         return -2
     tmp1_field2 = float(tmp1[1])
     tmp2_field2 = float(tmp2[1])
@@ -44,7 +44,7 @@ def write_ratio(filename1,filename2,savefile):
 
 if __name__ == "__main__":
   if (len(sys.argv)!=4):
-    print "Usage:",sys.argv[0],"<filename1> <filename2> <savefile>"
+    print("Usage: %s <filename1> <filename2> <savefile>" %(sys.argv[0]))
     exit(2)
   filename1 = sys.argv[1]
   filename2 = sys.argv[2]
