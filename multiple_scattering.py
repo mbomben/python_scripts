@@ -13,21 +13,21 @@ def thetaMS(p,w,X0):
   
   
 
-#p = 4e3 # MeV - DESY
-p = 120e3 # MeV - CERN
+p = 5e3 # MeV - DESY
+#p = 120e3 # MeV - CERN
 X0Si=9.36 # cm
-#w =4e-2 # cm - detector only
-w =1.5 # cm - with box included
+w =4e-2 # cm - detector only
+#w =1.5 # cm - with box included
 L1 = 59.800-15.200 #cm
 L2 = 65.300-59.800 #cm
 L3 = 104.100-65.300 #cm
-print "L1=",L1,"cm"
-print "L2=",L2,"cm"
-print "L3=",L3,"cm"
+print("L1 = %f cm" %(L1))
+print("L2 = %f cm" %(L2))
+print("L3 = %f cm" %(L3))
 theta = thetaMS(p,w,X0Si)
-print "theta=",theta,"rad"     
+print ("theta = %f rad" %(theta))     
 deltay_tele1=L2*tan(theta)+L3*tan(sqrt(2)*theta)
 #print "deltay_tele1=",deltay_tele1*1e4,"um"
 deltay_dut0=L1/(L1+L2+L3)*deltay_tele1/((3.)**0.5)
-print "deltay_dut0=",deltay_dut0*1e4,"um"
+print("deltay_dut0 = %f um" %(deltay_dut0*1e4))
 
