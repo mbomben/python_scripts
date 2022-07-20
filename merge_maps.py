@@ -1,5 +1,21 @@
 import os
 import sys
+import argparse
+import re
+
+# argument parser
+def argumentParser(arguments):
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--output",help="output file name",required=True)
+  parser.add_argument("--input",nargs="+",action="append",help="input file names",required=True)
+  parser.add_argument("--ncoord",nargs=1,help="space dimensions",default=3,type=int)
+  parser.add_argument("--nproject",nargs=1,help="number of observable projections",default=3,type=int)
+
+
+  args = parser.parse_args(arguments)
+
+
+  return args
 
 def file_exists(file_name):
   file_existence = os.path.exists(file_name)
@@ -13,65 +29,88 @@ def get_file_size(file_name):
     print("%s has zero size" % (file_name))
   return file_size
 
-def merge_maps(zmin,zmax,output_file_name):
+def check_number_of_lines(nlines_input_file):
+  nfiles = len(nlines_input_file)
+  if (nlines_input_file != 1):
+    for i in range(1,nfiles):
+      if ( nlines_input_file[i-1] != nlines_input_file[i] ):
+        print("Mismatch in number of lines")
+        return i
+  else:
+    return 0
+  return 0
+
+def merge_maps(input_file_names,output_file_name,ncoord,nproject):
 
 
-  base_file_name = "map_2D_z_"
-  Xextension = "_EFieldX.dat"
-  Yextension = "_EFieldY.dat"
-  Zextension = "_EFieldZ.dat"
+  #print("ncoord:")
+  #print(ncoord)
+  #print("\n\n\n")
 
-  new_point = 1
-  new_current = 2
+  # reading input files
+  input_file_lines = []
+  nlines_input_file = []
+  for input_file in input_file_names:
+    with open(input_file,'r') as original:
+      original_lines = original.readlines()
+      nlines = len(original_lines)
+      input_file_lines.append(original_lines)
+      nlines_input_file.append(nlines)
 
-  skipz = 0
+  #print(nlines_input_file)
+  #print("len(input_file_lines):")
+  #print(len(input_file_lines))
+  #print("\n\n\n")
+  #print("input_file_lines:")
+  #print(input_file_lines)
+  #print("\n\n\n")
 
+  # check if the files have all the same number of lines
+  i = check_number_of_lines(nlines_input_file)
+  if ( i ):
+    print("%s and %s have different number of lines: %d vs %d\nExiting..." % (input_file_names[i-1],input_file_names[i],nlines_input_file[i-1],nlines_input_file[i]) )
+    exit(i)
+ 
+  # writing output file
   with open(output_file_name,'w') as ofile:
-    for z in range(zmin,zmax+1):
-      skipz = 0
-      original_fileX = base_file_name + str(z) + Xextension
-      original_fileY = base_file_name + str(z) + Yextension
-      original_fileZ = base_file_name + str(z) + Zextension
-      if ( not ( file_exists(original_fileX) and file_exists(original_fileY) and file_exists(original_fileZ) and get_file_size(original_fileX) and get_file_size(original_fileY) and get_file_size(original_fileZ) ) ):
-        print("Skipping all files for z = %d" % (z))
-        skipz = 1
-      if not skipz:    
-        with open(original_fileX,'r') as originalX:
-          original_linesX = originalX.readlines()
-        nlinesX = len(original_linesX)
-        with open(original_fileY,'r') as originalY:
-          original_linesY = originalY.readlines()
-        nlinesY = len(original_linesY)
-        with open(original_fileZ,'r') as originalZ:
-          original_linesZ = originalZ.readlines()
-        nlinesZ = len(original_linesZ)
-        if ( ( not ( nlinesX == nlinesY ) ) or ( not ( nlinesZ == nlinesY ) ) ):
-          print("Files for z = %d have different number of lines; skipping" % (z))
-          skipz = 1
-        if not skipz:
-          for line_index in range(nlinesX):
-            lineX = original_linesX[line_index]
-            lineY = original_linesY[line_index]
-            lineZ = original_linesZ[line_index]
-            split_lineX = lineX.split()
-            split_lineY = lineY.split()
-            split_lineZ = lineZ.split()
-            x = float(split_lineX[0])
-            y = float(split_lineX[1])
-            Ex = float(split_lineX[2])
-            Ey = float(split_lineY[2])
-            Ez = float(split_lineZ[2])
-            ofile.write('%e %e %d %e %e %e\n' % (x,y,z,Ex,Ey,Ez))
+    for line_index in range(nlines_input_file[0]):
+      # the list to be written in the output file
+      outputlist = []
+      # first the coordinates
+      split_line = (input_file_lines[0])[line_index]
+      coordinates = (split_line.split())
+      coordinate_values = []
+      for k in range(ncoord):
+        coordinate_values.append(float(coordinates[k]))
+      #print("coordinates:")
+      #print(len(coordinate_values))
+      #print(coordinate_values)
+      #print("\n\n\n")
+      for l in range(len(coordinate_values)):
+        outputlist.append(coordinate_values[l])
+      # then the observable projections
+      for j in range(nproject):
+        observable = float((((input_file_lines[j])[line_index]).split())[-1])
+        # adding the observable projections
+        outputlist.append(observable)
+      #print(outputlist)
+      ofile.write(' '.join(str(value) for value in outputlist))
+      ofile.write('\n')
 
 
 
 
 if __name__ == "__main__":
-  if (len(sys.argv)!=4):
-    print("Usage: %s ""<zmin> <zmax> <output file name>\n" % (sys.argv[0]))
-    exit(2)
-  zmin = int(sys.argv[1])
-  zmax  = int(sys.argv[2])
-  output_file_name  = sys.argv[3]
-  merge_maps(zmin,zmax,output_file_name)
-  print("merged file is: %s\n" % (output_file_name))  
+  args = argumentParser(sys.argv[1:])
+  output_file_name  = args.output
+  #print(output_file_name)
+  input_file_names  = args.input[0]
+  ncoord = int(args.ncoord)
+  nproject = int(args.nproject)
+  #print(input_file_names)
+
+  if (len(input_file_names) != (nproject)):
+    print("Number of input files should be equal to number of observable projections\nExiting...");
+    exit(1)
+  merge_maps(input_file_names,output_file_name,ncoord,nproject)
+  print("\nmerged file is: %s" % (output_file_name))  
