@@ -1,11 +1,15 @@
 import sys
 import atlas_root_multi_graph
 from ROOT import gROOT, TCanvas, TGraph, TAxis, TMultiGraph, TLegend, gPad, TH1F, TString
+import ROOT
 from array import array
 import xml.etree.ElementTree as ET
+import AtlasStyle
 import AtlasUtils
+import AtlasLabels
 
 def mp(filename,show=False): 
+  ROOT.SetAtlasStyle()
   #filename = filename[0]
   tree = ET.parse(filename)
   root = tree.getroot()
@@ -137,14 +141,21 @@ def mp(filename,show=False):
   except:
     pass
   try:
-    AtlasUtils.ATLAS_LABEL(xatlaslabel,yatlaslabel)
-  except:
+    #AtlasUtils.ATLAS_LABEL(xatlaslabel,yatlaslabel)
+    #AtlasUtils.ATLASLabel(xatlaslabel,yatlaslabel)
+    ROOT.ATLASLabel(xatlaslabel,yatlaslabel)
+  except Exception as e: 
+    print(e)
+    #print("impossible to AtlasUtils.ATLAS_LABEL(xatlaslabel,yatlaslabel)")
+    #print("impossible to AtlasUtils.ATLASLabel(xatlaslabel,yatlaslabel)")
+    print("impossible to AtlasLabels.ATLASLabel(xatlaslabel,yatlaslabel)")
     pass
   
   try:
     mytext = plot.get_mytext()
     for mt in mytext:
-      AtlasUtils.myText(mt.get_x(),mt.get_y(),mt.get_color(),mt.get_label())
+      #AtlasUtils.myText(mt.get_x(),mt.get_y(),mt.get_color(),mt.get_label())
+      ROOT.myText(mt.get_x(),mt.get_y(),mt.get_color(),mt.get_label())
   except:
     pass
 
@@ -171,6 +182,7 @@ def mp(filename,show=False):
   return c1
 
 if (__name__ == "__main__"):
+  ROOT.SetAtlasStyle()
   show = False
   if (len(sys.argv) < 2 or len(sys.argv) > 3 ):
     print("Usage: %s <filename.xml> [show]\n" % (sys.argv[0]))
