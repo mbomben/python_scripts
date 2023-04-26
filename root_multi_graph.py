@@ -1208,6 +1208,126 @@ class legend(GeneratedsSuper):
 # end class legend
 
 
+class canvas(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, name='c1', title='', w=800, h=600):
+        self.original_tagname_ = None
+        self.name = name
+        self.title = title
+        self.w = w
+        self.h = h
+    def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, canvas)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
+        if canvas.subclass:
+            return canvas.subclass(*args_, **kwargs_)
+        else:
+            return canvas(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_title(self): return self.title
+    def set_title(self, title): self.title = title
+    def get_w(self): return self.w
+    def set_w(self, w): self.w = w
+    def get_h(self): return self.h
+    def set_h(self, h): self.h = h
+    def hasContent_(self):
+        if (
+            self.name != 'c1' or
+            self.title != '' or
+            self.w != 800 or
+            self.h != 600
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='canvas', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.original_tagname_ is not None:
+            name_ = self.original_tagname_
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='canvas')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_='', name_='canvas', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='canvas'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='canvas', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.name != 'c1':
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_double(self.name, input_name='name'), namespace_, eol_))
+        if self.title != '':
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%stitle>%s</%stitle>%s' % (namespace_, self.gds_format_double(self.title, input_name='title'), namespace_, eol_))
+        if self.w != 800:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sw>%s</%sw>%s' % (namespace_, self.gds_format_double(self.w, input_name='w'), namespace_, eol_))
+        if self.h != 600:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sh>%s</%sh>%s' % (namespace_, self.gds_format_double(self.h, input_name='h'), namespace_, eol_))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'name':
+            sval_ = child_.text
+            try:
+                fval_ = str(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires string: %s' % exp)
+            fval_ = self.gds_validate_string(fval_, node, 'name')
+            self.name = fval_
+        elif nodeName_ == 'title':
+            sval_ = child_.text
+            try:
+                fval_ = str(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires string: %s' % exp)
+            fval_ = self.gds_validate_string(fval_, node, 'title')
+            self.title = fval_
+        elif nodeName_ == 'w':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'w')
+            self.w = fval_
+        elif nodeName_ == 'h':
+            sval_ = child_.text
+            try:
+                fval_ = float(sval_)
+            except (TypeError, ValueError) as exp:
+                raise_parse_error(child_, 'requires float or double: %s' % exp)
+            fval_ = self.gds_validate_float(fval_, node, 'h')
+            self.h = fval_
+# end class canvas
+
+
 class grid(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -1293,7 +1413,7 @@ class grid(GeneratedsSuper):
 class plot(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, filename=None, title='', axe=None, legend=None, grid=None, curve=None):
+    def __init__(self, filename=None, title='', axe=None, legend=None, canvas=None, grid=None, curve=None):
         self.original_tagname_ = None
         self.filename = filename
         self.title = title
@@ -1302,6 +1422,7 @@ class plot(GeneratedsSuper):
         else:
             self.axe = axe
         self.legend = legend
+        self.canvas = canvas
         self.grid = grid
         if curve is None:
             self.curve = []
@@ -1329,6 +1450,8 @@ class plot(GeneratedsSuper):
     def replace_axe_at(self, index, value): self.axe[index] = value
     def get_legend(self): return self.legend
     def set_legend(self, legend): self.legend = legend
+    def get_canvas(self): return self.canvas
+    def set_canvas(self, canvas): self.canvas = canvas
     def get_grid(self): return self.grid
     def set_grid(self, grid): self.grid = grid
     def get_curve(self): return self.curve
@@ -1342,6 +1465,7 @@ class plot(GeneratedsSuper):
             self.title != "" or
             self.axe or
             self.legend is not None or
+            self.cavans is not None or
             self.grid is not None or
             self.curve
         ):
@@ -1383,6 +1507,8 @@ class plot(GeneratedsSuper):
             axe_.export(outfile, level, namespace_, name_='axe', pretty_print=pretty_print)
         if self.legend is not None:
             self.legend.export(outfile, level, namespace_, name_='legend', pretty_print=pretty_print)
+        if self.canvas is not None:
+            self.canvas.export(outfile, level, namespace_, name_='canvas', pretty_print=pretty_print)
         if self.grid is not None:
             self.grid.export(outfile, level, namespace_, name_='grid', pretty_print=pretty_print)
         for curve_ in self.curve:
@@ -1415,6 +1541,11 @@ class plot(GeneratedsSuper):
             obj_.build(child_)
             self.legend = obj_
             obj_.original_tagname_ = 'legend'
+        elif nodeName_ == 'canvas':
+            obj_ = canvas.factory()
+            obj_.build(child_)
+            self.canvas = obj_
+            obj_.original_tagname_ = 'canvas'
         elif nodeName_ == 'grid':
             obj_ = grid.factory()
             obj_.build(child_)
@@ -1555,6 +1686,7 @@ __all__ = [
     "curve",
     "grid",
     "legend",
+    "canvas",
     "line",
     "marker",
     "plot"
