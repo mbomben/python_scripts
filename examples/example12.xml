@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plot 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="root_multi_graph.xsd">
+<filename>example12</filename>
+  <title>atlas style example</title>
+<canvas>
+  <name>c1</name>
+  <title>canvas title</title>
+  <w>1000</w>
+  <h>400</h>
+</canvas>
+  <atlasl>
+    <x>0.4</x>
+    <y>0.8</y>
+    <color>1</color>
+  </atlasl>
+  <mytext>
+    <x>0.52</x>
+    <y>0.8</y>
+    <color>1</color>
+    <label>Internal - Preliminary</label>
+  </mytext>
+  <legend>
+    <x1>0.2</x1>
+    <y1>0.6</y1>
+    <x2>0.4</x2>
+    <y2>0.8</y2>
+  </legend>
+  <axe>
+    <name>X</name>
+    <label>Bulk depth [#mum]</label>
+    <min>1</min>
+    <max>7</max>
+  </axe>
+  <axe>
+    <name>Y</name>
+    <label>Electric Field [V/cm]</label>
+    <min>1</min>
+    <max>29</max>
+  </axe>
+  <curve>
+    <data>gr3.txt</data>
+    <label>100 V</label>
+    <marker>
+      <style>20</style>
+    </marker>
+    <line>
+      <size>0.0</size>
+    </line>
+  </curve>
+  <curve>
+    <data>gr4.txt</data>
+    <label>300 V</label>
+    <marker>
+      <color>1</color>
+      <size>0.0</size>
+      <style>0</style>
+    </marker>
+    <line>
+      <style>1</style>
+      <color>1</color>
+      <size>1</size>
+    </line>
+  </curve>
+</plot>
