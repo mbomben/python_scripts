@@ -104,7 +104,15 @@ def mp(filename,show=False):
   minY = Yaxe.get_min()
   maxY = Yaxe.get_max()
   print ('Y range %f %f' % (minY,maxY))
-  c1 = TCanvas('c1',title)
+  if ( plot.get_canvas() ):
+    canvas = plot.get_canvas()
+    name = canvas.get_name()
+    title = canvas.get_title()
+    w = int(canvas.get_w())
+    h = int(canvas.get_h())
+    c1 = TCanvas(name,title,w,h)
+  else:
+    c1 = TCanvas('c1','')
   c1.cd()
   gPad.Range(minX,maxX,minY,maxY)
   gPad.Draw()
