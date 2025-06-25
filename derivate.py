@@ -40,11 +40,13 @@ def derivate(original_file,points_file,result_file):
   sall_current = asarray(all_current)
   #print sall_current[3]
   new_currents = []
-  with open(result_file,'wb') as ofile:
+  with open(result_file,'w') as ofile:
     for new_point in new_points:
       new_current = mini_derivative(original_file,new_point)
       new_currents.append(new_current)
-      ofile.write('%f %e\n' % (new_point,new_current))
+      #print(type(new_point))
+      #print(type(new_current))
+      ofile.write('%f %e\n' % (float(new_point),float(new_current)))
   
     
   #splrepint = interpolate.splrep(sall_time, sall_current)
@@ -58,7 +60,7 @@ def derivate(original_file,points_file,result_file):
   
 if __name__ == "__main__":
   if (len(sys.argv)!=4):
-    print "Usage:",sys.argv[0],"<original file> <points file> <new results file>"
+    print("Usage: %s <original file> <points file> <new results file>" % (sys.argv[0]))
     exit(2)
   original_filename = sys.argv[1]
   points_filename  = sys.argv[2]

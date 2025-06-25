@@ -30,13 +30,13 @@ def mini_derivative(original_file,point):
   currentnew = interpolate.splev(spoint, splrepint, der=1)
   
   #print 'I(',point,') =',currentnew
-  return currentnew
+  return float(currentnew)
   
 if __name__ == "__main__":
   if (len(sys.argv)!=3):
-    print "Usage:",sys.argv[0],"<original file> <new point file>"
+    print("Usage: %s <original file> <new point file>" % (sys.argv[0]))
     exit(2)
   original_filename = sys.argv[1]
   point  = float(sys.argv[2])
   der=mini_derivative(original_filename,point)
-  print der
+  print(der)

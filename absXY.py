@@ -11,7 +11,7 @@ def absXY(filename):
   basename=os.path.splitext(filename)[0]
   ext = os.path.splitext(filename)[1]
   savefile = "%s_absXY%s" % (basename,ext)
-  print "savefile is",savefile
+  print("savefile is ",savefile)
 
   output_file = open(savefile,'w')
 
@@ -28,7 +28,7 @@ def absXY(filename):
 
 if __name__ == "__main__":
   if (len(sys.argv)!=2):
-    print "Usage:",sys.argv[0],"<filename>"
+    print("Usage: ",sys.argv[0]," <filename>")
     exit(2)
   filename = sys.argv[1]
   absXY(filename)
