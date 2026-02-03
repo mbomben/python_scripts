@@ -1,9 +1,14 @@
 import sys
+import os
 from check_duplicate_lines import check_duplicate_lines as cdl
 
 def trim_duplicated_lines(filename,verbose=0):
-  
-  new_filename = "new_" +filename
+ 
+  # get file path and file name
+  dirname = os.path.dirname(filename)
+  basename = os.path.basename(filename)
+
+  new_filename = dirname+ "/new_" +basename
 
   # list of duplicated lines
   # Attention: the number of lines starts from 1 and not from 0
@@ -25,6 +30,8 @@ def trim_duplicated_lines(filename,verbose=0):
       if ( verbose ):
         sys.stdout.write('original line ' + f_lines[n_line])
 
+  return new_filename
+
 if ( __name__ == "__main__" ):
   if (len(sys.argv) < 2 or len(sys.argv) > 3):
     print("Usage: %s <filename.txt> (verbose=0)\n" % (sys.argv[0] ))
@@ -33,4 +40,5 @@ if ( __name__ == "__main__" ):
   verbose = 0
   if ( len(sys.argv) > 2 ):
     verbose = int(sys.argv[2])
-  trim_duplicated_lines(filename,verbose)
+  new_filename = trim_duplicated_lines(filename,verbose)
+  print(new_filename)
